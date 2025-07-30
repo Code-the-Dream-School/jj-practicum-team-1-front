@@ -27,3 +27,40 @@ Note: In the below example, the group's front-end repository was named `bb-pract
 
 #### Running the front-end server in the browser
 ![browser running](images/front-end-running-browser.png)
+
+
+
+
+
+### Git Workflow - Step by Step Guide
+
+#### Creating a New Branch
+1. Make sure you're on the main branch: `git checkout main`
+2. Pull the latest changes: `git pull origin main`
+3. Create and switch to a new branch: `git checkout -b your-feature-branch-name`
+   - Use descriptive branch names like: `add-login-form`, `fix-header-styling`, `update-user-profile`
+
+#### Making and Committing Changes
+1. Make your code changes in your preferred editor
+2. Check which files have been modified: `git status`
+3. Stage your changes:
+   - Stage specific files: `git add filename.js`
+   - Stage all changes: `git add .`
+4. Commit your changes with a descriptive message:
+   ```bash
+   git commit -m "Add user authentication form with validation"
+   ```
+
+#### Pushing Changes and Creating Pull Requests
+1. Push your branch to the remote repository:
+   ```bash
+   git push origin your-feature-branch-name
+   ```
+2. Go to the GitHub repository in your browser
+3. Click "Compare & pull request" button that appears
+4. Write a clear description of your changes
+5. Request review from your team members
+6. Wait for approval before merging
+
+
+

@@ -1,0 +1,31 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #f0fdf4; /* soft green */
+    border-bottom: 1px solid #d1d5db; /* light gray */
+  }
+  
+  .logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #047857; /* green-700 */
+    text-decoration: none;
+  }
+  
+  .authLinks {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .link {
+    text-decoration: none;
+    color: #047857;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  
+  .link:hover {
+    color: #065f46; /* darker green */
+  }

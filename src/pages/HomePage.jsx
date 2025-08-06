@@ -7,7 +7,7 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main className="overflow-x-hidden flex flex-col items-center text-center pt-20">
+      <main className="flex flex-col items-center text-center pt-20 overflow-x-hidden">
         {/* Hero Section */}
         <section className="relative w-full h-[550px]">
           <img
@@ -19,15 +19,15 @@ export default function HomePage() {
           {/* Overlay */}
           <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50" />
 
-          {/* Hero content */}
-          <div className="absolute inset-0 flex flex-col justify-center items-start px-6 sm:px-12 md:px-20 lg:px-24 text-white z-10 max-w-screen">
+          {/* Hero content aligned right */}
+          <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-end pr-8 md:pr-24 text-white z-10 text-right">
             <h1 className="text-4xl md:text-6xl font-bold mb-2">
               Plant observation
             </h1>
             <p className="text-lg md:text-xl mb-4 max-w-md">
               An app for recording and identifying plants
             </p>
-            <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex flex-col md:flex-row gap-4 justify-end">
               <Link to="/explore">
                 <Button>Explore</Button>
               </Link>

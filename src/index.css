@@ -2,6 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-    border: 3px solid red;
-  }

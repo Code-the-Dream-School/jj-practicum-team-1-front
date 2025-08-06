@@ -1,34 +1,33 @@
-
 import { Link } from "react-router-dom";
 import Navbar from "../components/shared/Navbar";
 import Button from "../components/shared/Button";
-import styles from "./HomePage.module.css";
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
 
-      <main className={styles.main}>
+      <main className="overflow-x-hidden flex flex-col items-center text-center pt-20">
         {/* Hero Section */}
-        <section className={styles.heroSection}>
+        <section className="relative w-full h-[550px]">
           <img
             src="/plant-hero.jpg"
             alt="Plant sprouting"
-            className={styles.heroImage}
+            className="w-full h-full object-cover"
           />
 
           {/* Overlay */}
-          <div className={styles.overlay} />
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50" />
 
           {/* Hero content */}
-          <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Plant observation</h1>
-            <p className={styles.heroSubtitle}>
+          <div className="absolute inset-0 flex flex-col justify-center items-start px-6 sm:px-12 md:px-20 lg:px-24 text-white z-10 max-w-screen">
+            <h1 className="text-4xl md:text-6xl font-bold mb-2">
+              Plant observation
+            </h1>
+            <p className="text-lg md:text-xl mb-4 max-w-md">
               An app for recording and identifying plants
             </p>
-
-            <div className={styles.buttonGroup}>
+            <div className="flex flex-col md:flex-row gap-4">
               <Link to="/explore">
                 <Button>Explore</Button>
               </Link>
@@ -37,9 +36,9 @@ export default function HomePage() {
         </section>
 
         {/* How It Works Section */}
-        <section id="how-it-works" className={styles.howItWorks}>
-          <h2 className={styles.sectionTitle}>How It Works</h2>
-          <p className={styles.sectionText}>
+        <section className="mt-16 px-6 md:px-12 w-full max-w-6xl">
+          <h2 className="text-2xl font-semibold mb-4">How It Works</h2>
+          <p className="text-base text-gray-600">
             Upload a plant photo, identify it using our database, and save it to your profile.
           </p>
         </section>

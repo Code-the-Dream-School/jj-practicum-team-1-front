@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllData } from './util/index';
-
+import PlantDetailPage from './pages/PlantDetailPage/PlantDetailPage';
 const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
   return (
     <>
       <h1>{message}</h1>
+      <PlantDetailPage/>
     </>
   );
 

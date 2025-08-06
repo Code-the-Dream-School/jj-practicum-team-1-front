@@ -4,8 +4,7 @@ import PlantDetailPage from './pages/PlantDetailPage/PlantDetailPage';
 const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
-  
-  const [message, setMessage] = useState(''); 
+  /*const [message, setMessage] = useState(''); 
 
   useEffect(() => {
 
@@ -18,15 +17,14 @@ function App() {
       console.log('unmounting');
     }
 
-  }, []);
+  }, []);*/
 
   return (
     <>
-      <h1>{message}</h1>
-      <PlantDetailPage/>
+      {/*<h1>{message}</h1>*/}
+      <PlantDetailPage />
     </>
   );
-
 }
 
-export default App
+export default App;

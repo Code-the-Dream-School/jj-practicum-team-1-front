@@ -7,9 +7,9 @@ export default function HomePage() {
     <>
       <Navbar />
 
-      <main className="flex flex-col items-center text-center pt-20 overflow-x-hidden">
+      <main className="overflow-x-hidden">
         {/* Hero Section */}
-        <section className="relative w-full h-[550px]">
+        <section className="relative w-full h-[420px] sm:h-[520px] lg:h-[600px] min-h-[350px] max-h-[90vh]">
           <img
             src="/plant-hero.jpg"
             alt="Plant sprouting"
@@ -17,17 +17,26 @@ export default function HomePage() {
           />
 
           {/* Overlay */}
-          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50" />
+          <div className="absolute inset-0 bg-black/50" />
 
-          {/* Hero content aligned right */}
-          <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-end pr-8 md:pr-24 text-white z-10 text-right">
-            <h1 className="text-4xl md:text-6xl font-bold mb-2">
+          {/* Hero content: mobile center → sm left → lg right */}
+          <div
+            className="
+              absolute inset-0 z-10 text-white
+              max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
+              flex flex-col justify-center
+              items-center text-center
+              sm:items-start sm:text-left
+              lg:items-end lg:text-right
+            "
+          >
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-2">
               Plant observation
             </h1>
-            <p className="text-lg md:text-xl mb-4 max-w-md">
+            <p className="text-sm sm:text-base lg:text-xl mb-4 max-w-md">
               An app for recording and identifying plants
             </p>
-            <div className="flex flex-col md:flex-row gap-4 justify-end">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <Link to="/explore">
                 <Button>Explore</Button>
               </Link>
@@ -36,13 +45,18 @@ export default function HomePage() {
         </section>
 
         {/* How It Works Section */}
-        <section className="mt-16 px-6 md:px-12 w-full max-w-6xl">
-          <h2 className="text-2xl font-semibold mb-4">How It Works</h2>
-          <p className="text-base text-gray-600">
-            Upload a plant photo, identify it using our database, and save it to your profile.
-          </p>
+        <section className="mt-12 sm:mt-16 lg:mt-24 w-full">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
+              How It Works
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600">
+              Upload a plant photo, identify it using our database, and save it to your profile.
+            </p>
+          </div>
         </section>
       </main>
     </>
   );
 }
+

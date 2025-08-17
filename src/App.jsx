@@ -1,13 +1,15 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import { AuthProvider } from "./auth/AuthContext";
+
 // import { getAllData } from './util/index'; // temporarily not needed
 
 // const URL = 'http://localhost:8000/api/v1/';
 
 function App() {
   // Temporarily disable this logic while we get routing working
-  // const [message, setMessage] = useState(''); 
+  // const [message, setMessage] = useState('');
 
   // useEffect(() => {
   //   (async () => {
@@ -20,12 +22,13 @@ function App() {
   // }, []);
 
   return (
-    <Router>
-      
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

@@ -5,11 +5,11 @@ This will be the front-end for your team's practicum project.
 It is suggested that you run these instructions **after** you setup the back-end server first.
 You can go through these steps during your first group meeting in case you need assistance from your mentors.
 
-You will have two folders inside one team folder (one for front-end and one for back-end). Name the parent folder something appropriate (in the below example we title it "Practicum Project").  Then clone directly (do not fork and clone) the front and back repos while inside the parent ("Practicum Project") project folder.
+You will have two folders inside one team folder (one for front-end and one for back-end). Name the parent folder something appropriate (in the below example we title it "Practicum Project"). Then clone directly (do not fork and clone) the front and back repos while inside the parent ("Practicum Project") project folder.
 
 ![folders](images/folder_structure.png)
 
->The front-end app (React) will be running on port 5173. The back-end server will be running on port 8000. You will need to run both the front-end app and the back-end server at the same time to test your app.
+> The front-end app (React) will be running on port 5173. The back-end server will be running on port 8000. You will need to run both the front-end app and the back-end server at the same time to test your app.
 
 ### Setting up local development environment
 
@@ -21,26 +21,26 @@ You will have two folders inside one team folder (one for front-end and one for 
 6. Now you have your front-end and back-end running locally!
 
 #### Running the front-end server in Visual Studio Code
-Note: In the below example, the group's front-end repository was named `bb-practicum-team1-front` and the back-end repository was named `bb-practicum-team-1-back`.  Your repository will have a different name, but the rest should look the same.
+
+Note: In the below example, the group's front-end repository was named `bb-practicum-team1-front` and the back-end repository was named `bb-practicum-team-1-back`. Your repository will have a different name, but the rest should look the same.
 
 ![vsc running](images/front-end-running-vsc.png)
 
 #### Running the front-end server in the browser
+
 ![browser running](images/front-end-running-browser.png)
-
-
-
-
 
 ### Git Workflow - Step by Step Guide
 
 #### Creating a New Branch
+
 1. Make sure you're on the main branch: `git checkout main`
 2. Pull the latest changes: `git pull origin main`
 3. Create and switch to a new branch: `git checkout -b your-feature-branch-name`
    - Use descriptive branch names like: `add-login-form`, `fix-header-styling`, `update-user-profile`
 
 #### Making and Committing Changes
+
 1. Make your code changes in your preferred editor
 2. Check which files have been modified: `git status`
 3. Stage your changes:
@@ -52,6 +52,7 @@ Note: In the below example, the group's front-end repository was named `bb-pract
    ```
 
 #### Pushing Changes and Creating Pull Requests
+
 1. Push your branch to the remote repository:
    ```bash
    git push origin your-feature-branch-name
@@ -61,6 +62,3 @@ Note: In the below example, the group's front-end repository was named `bb-pract
 4. Write a clear description of your changes
 5. Request review from your team members
 6. Wait for approval before merging
-
-
-

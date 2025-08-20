@@ -22,9 +22,14 @@ export function clearToken() {
 
 const API_URL = import.meta.env.VITE_API_URL?.replace(/\/$/, "") || "";
 
-async function request(path, { method = "GET", body, headers = {}, signal } = {}) {
+async function request(
+  path,
+  { method = "GET", body, headers = {}, signal } = {}
+) {
   if (!API_URL) {
-    throw new Error("VITE_API_URL is not set. Please configure your .env.local");
+    throw new Error(
+      "VITE_API_URL is not set. Please configure your .env.local"
+    );
   }
 
   const url = `${API_URL}${path.startsWith("/") ? path : `/${path}`}`;
@@ -36,7 +41,9 @@ async function request(path, { method = "GET", body, headers = {}, signal } = {}
       ...(hasBody ? { "Content-Type": "application/json" } : {}),
       ...(headers || {}),
     },
-    ...(hasBody ? { body: typeof body === "string" ? body : JSON.stringify(body) } : {}),
+    ...(hasBody
+      ? { body: typeof body === "string" ? body : JSON.stringify(body) }
+      : {}),
     ...(signal ? { signal } : {}),
   };
 
@@ -51,13 +58,16 @@ async function request(path, { method = "GET", body, headers = {}, signal } = {}
   const data = isJson ? await res.json().catch(() => null) : null;
 
   if (!res.ok) {
-    const message = data?.message || data?.error || res.statusText || "Request failed";
+    const message =
+      data?.message || data?.error || res.statusText || "Request failed";
     const error = new Error(message);
     error.status = res.status;
     error.payload = data;
     if (res.status === 401) {
-        try { localStorage.removeItem("auth.token"); } catch {}
-      }
+      try {
+        localStorage.removeItem("auth.token");
+      } catch {}
+    }
     throw error;
   }
 
@@ -68,7 +78,8 @@ const api = {
   get: (path, opts) => request(path, { ...opts, method: "GET" }),
   post: (path, body, opts) => request(path, { ...opts, method: "POST", body }),
   put: (path, body, opts) => request(path, { ...opts, method: "PUT", body }),
-  patch: (path, body, opts) => request(path, { ...opts, method: "PATCH", body }),
+  patch: (path, body, opts) =>
+    request(path, { ...opts, method: "PATCH", body }),
   del: (path, opts) => request(path, { ...opts, method: "DELETE" }),
 };
 

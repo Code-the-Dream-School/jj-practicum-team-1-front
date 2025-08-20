@@ -51,7 +51,8 @@ export default function HomePage() {
               How It Works
             </h2>
             <p className="text-sm sm:text-base text-gray-600">
-              Upload a plant photo, identify it using our database, and save it to your profile.
+              Upload a plant photo, identify it using our database, and save it
+              to your profile.
             </p>
           </div>
         </section>
@@ -59,4 +60,3 @@ export default function HomePage() {
     </>
   );
 }
-

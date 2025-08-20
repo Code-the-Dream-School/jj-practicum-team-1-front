@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import PlantsPage from './pages/PlantsPage';
+import PlantDetailPage from './pages/PlantDetailPage';
 // import { getAllData } from './util/index'; // temporarily not needed
 
 // const URL = 'http://localhost:8000/api/v1/';
@@ -21,9 +23,10 @@ function App() {
 
   return (
     <Router>
-      
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/plants" element={<PlantsPage />} />
+        <Route path="/plants/:id" element={<PlantDetailPage />} />
       </Routes>
     </Router>
   );

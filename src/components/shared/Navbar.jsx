@@ -37,6 +37,9 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-2">
+          <NavLink to="/explore" className={link}>
+            Home
+          </NavLink>
           <NavLink to="/login" className={link}>
             Log In
           </NavLink>
@@ -94,6 +97,13 @@ export default function Navbar() {
         }`}
       >
         <div className="px-2 py-2 space-y-1">
+          <NavLink
+            to="/explore"
+            className={link}
+            onClick={() => setOpen(false)}
+          >
+            Home
+          </NavLink>
           <NavLink to="/login" className={link} onClick={() => setOpen(false)}>
             Log In
           </NavLink>

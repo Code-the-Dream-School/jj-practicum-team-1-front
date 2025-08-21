@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { token, logout } = useAuth(); 
 
   // Close the mobile menu when resizing to desktop
   useEffect(() => {
@@ -37,12 +39,29 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-2">
-          <NavLink to="/login" className={link}>
-            Log In
+          <NavLink to="/explore" className={link}>
+            Home
           </NavLink>
-          <NavLink to="/signup" className={link}>
-            Sign Up
-          </NavLink>
+
+          {!token ? (
+            <>
+              <NavLink to="/login" className={link}>
+                Log In
+              </NavLink>
+              <NavLink to="/signup" className={link}>
+                Sign Up
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink to="/explore" className={link}>
+                Explore
+              </NavLink>
+              <button onClick={logout} className={linkBase}>
+                Log Out
+              </button>
+            </>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -94,12 +113,51 @@ export default function Navbar() {
         }`}
       >
         <div className="px-2 py-2 space-y-1">
-          <NavLink to="/login" className={link} onClick={() => setOpen(false)}>
-            Log In
+          <NavLink
+            to="/explore"
+            className={link}
+            onClick={() => setOpen(false)}
+          >
+            Home
           </NavLink>
-          <NavLink to="/signup" className={link} onClick={() => setOpen(false)}>
-            Sign Up
-          </NavLink>
+
+          {!token ? (
+            <>
+              <NavLink
+                to="/login"
+                className={link}
+                onClick={() => setOpen(false)}
+              >
+                Log In
+              </NavLink>
+              <NavLink
+                to="/signup"
+                className={link}
+                onClick={() => setOpen(false)}
+              >
+                Sign Up
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/explore"
+                className={link}
+                onClick={() => setOpen(false)}
+              >
+                Explore
+              </NavLink>
+              <button
+                onClick={() => {
+                  logout();
+                  setOpen(false);
+                }}
+                className={linkBase}
+              >
+                Log Out
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>

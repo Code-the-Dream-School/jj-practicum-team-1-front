@@ -30,14 +30,32 @@ export function AuthProvider({ children }) {
     setLoading(false); // done checking localStorage
   }, []);
 
-  // Call this from the Login page later
+  // Login function calls backend with email/password
+  // → returns { user: { name, userId }, token }
   const login = useCallback(async ({ email, password }) => {
-    const data = await api.post("/auth/login", { email, password });
-    if (!data?.token) throw new Error("Login did not return a token");
-    setApiToken(data.token); // keep token in localStorage + api client
-    setToken(data.token);
-    if (data.user) setUser(data.user);
-    return data;
+    try {
+      // notice the full path /auth/login
+      const data = await api.post("/auth/login", { email, password });
+
+      if (!data?.token) {
+        throw new Error("Login did not return a token");
+      }
+
+      // store token so requests after this include it
+      setApiToken(data.token);
+      setToken(data.token);
+
+      if (data.user) {
+        setUser(data.user);
+        // saving user in localStorage just to persist after refresh
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
+
+      return true; // success
+    } catch (err) {
+      console.error("Login error:", err); // for now I just log it
+      return false; // later we could show a nicer error message
+    }
   }, []);
 
   // Simple logout: forget token and user
@@ -47,6 +65,7 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  // everything we want to use in the rest of the app
   const value = useMemo(
     () => ({
       token,

@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import Navbar from "../components/shared/Navbar";
+// import Navbar from "../components/shared/Navbar";
 import Button from "../components/shared/Button";
 
 export default function HomePage() {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="overflow-x-hidden">
         {/* Hero Section */}

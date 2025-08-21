@@ -5,7 +5,6 @@ import { useAuth } from "./AuthContext";
 export default function LoginForm() {
   const { login } = useAuth(); // we use the login function from context
   const navigate = useNavigate();
-  
 
   // local state just for form inputs
   const [email, setEmail] = useState("");
@@ -20,8 +19,13 @@ export default function LoginForm() {
     setError(""); // reset old errors
     setLoading(true);
 
+    console.log("➡️ Trying to log in with:", email); // debug
+
     // call login() from AuthContext
     const success = await login({ email, password });
+
+    console.log("✅ Login result:", success); // debug
+
     if (success) {
       // if login worked → go to explore page
       navigate("/explore");

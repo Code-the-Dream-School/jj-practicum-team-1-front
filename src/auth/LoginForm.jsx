@@ -3,34 +3,34 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 export default function LoginForm() {
-  const { login } = useAuth(); // we use the login function from context
+  const { login } = useAuth(); 
   const navigate = useNavigate();
 
-  // local state just for form inputs
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // also track error & loading here for now
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError(""); // reset old errors
+    setError("");
     setLoading(true);
 
     console.log("➡️ Trying to log in with:", email); // debug
 
-    // call login() from AuthContext
+ 
     const success = await login({ email, password });
 
     console.log("✅ Login result:", success); // debug
 
     if (success) {
-      // if login worked → go to explore page
-      navigate("/explore");
+     
+      navigate("/plants");
     } else {
-      // if login failed → just show a message
+   
       setError("Invalid email or password");
     }
 

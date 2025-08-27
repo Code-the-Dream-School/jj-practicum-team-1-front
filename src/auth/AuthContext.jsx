@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import api, {
   setToken as setApiToken,
   getStoredToken,
@@ -17,55 +18,82 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  // shows if we’re still checking localStorage on page load
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // On app start, try to restore a saved token so the user stays logged in after refresh
+
   useEffect(() => {
     const saved = getStoredToken();
     if (saved) {
-      setApiToken(saved); // tell api client to use this token
-      setToken(saved); // store it in React state
+      setApiToken(saved); 
+      setToken(saved); 
     }
-    setLoading(false); // done checking localStorage
+    setLoading(false);
   }, []);
 
-  // Login function calls backend with email/password
-  // → returns { user: { name, userId }, token }
+
   const login = useCallback(async ({ email, password }) => {
     try {
-      // notice the full path /auth/login
-      const data = await api.post("/auth/login", { email, password });
+ 
+      const data = await api.post("/api/v1/auth/login", { email, password });
 
       if (!data?.token) {
         throw new Error("Login did not return a token");
       }
 
-      // store token so requests after this include it
+
       setApiToken(data.token);
       setToken(data.token);
 
       if (data.user) {
         setUser(data.user);
-        // saving user in localStorage just to persist after refresh
+        
         localStorage.setItem("user", JSON.stringify(data.user));
       }
 
-      return true; // success
+      return true; 
     } catch (err) {
-      console.error("Login error:", err); // for now I just log it
-      return false; // later we could show a nicer error message
+      console.error("Login error:", err); 
+      return false; 
     }
   }, []);
 
-  // Simple logout: forget token and user
-  const logout = useCallback(() => {
-    clearApiToken(); // removes token from localStorage + api client
-    setToken(null);
-    setUser(null);
+
+  const signup = useCallback(async ({ name, email, password }) => {
+    try {
+      
+      const data = await api.post("/api/v1/auth/register", { name, email, password });
+
+      if (!data?.token) {
+        throw new Error("Signup did not return a token");
+      }
+
+    
+      setApiToken(data.token);
+      setToken(data.token);
+
+      if (data.user) {
+        setUser(data.user);
+  
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
+
+      return true;
+    } catch (err) {
+      console.error("Signup error:", err); 
+      return false; 
+    }
   }, []);
 
-  // everything we want to use in the rest of the app
+
+  const logout = useCallback(() => {
+    clearApiToken(); 
+    setToken(null);
+    setUser(null);
+    navigate("/");
+  }, [navigate]);
+
+ 
   const value = useMemo(
     () => ({
       token,
@@ -73,9 +101,10 @@ export function AuthProvider({ children }) {
       loading,
       isAuthenticated: !!token,
       login,
+      signup,
       logout,
     }),
-    [token, user, loading, login, logout]
+    [token, user, loading, login, signup, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

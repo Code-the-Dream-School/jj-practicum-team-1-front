@@ -40,7 +40,7 @@ Create `.env.local` in the project root:
 
 ```bash
 #Backend base URL (required):
-VITE_API_URL=http://localhost:8000
+VITE_API_URL=http://localhost:8000/api/v1
 ```
 A sample file is provided: `.env.local.example`
 

@@ -14,7 +14,7 @@ export default function PlantGrid() {
         setError(null);
         
    
-        const response = await api.get('/api/v1/plants');
+        const response = await api.get('/plants');
         setPlants(response.plants || []);
       } catch (err) {
         console.error('Error fetching plants:', err);

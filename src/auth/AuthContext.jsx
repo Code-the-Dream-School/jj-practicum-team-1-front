@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(async ({ email, password }) => {
     try {
  
-      const data = await api.post("/api/v1/auth/login", { email, password });
+      const data = await api.post("/auth/login", { email, password });
 
       if (!data?.token) {
         throw new Error("Login did not return a token");
@@ -62,7 +62,7 @@ export function AuthProvider({ children }) {
   const signup = useCallback(async ({ name, email, password }) => {
     try {
       
-      const data = await api.post("/api/v1/auth/register", { name, email, password });
+      const data = await api.post("/auth/register", { name, email, password });
 
       if (!data?.token) {
         throw new Error("Signup did not return a token");

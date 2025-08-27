@@ -19,7 +19,7 @@ export default function PlantDetailPage() {
         setError(null);
         
         // Make API call to get single plant
-        const response = await api.get(`/api/v1/plants/${id}`);
+        const response = await api.get(`/plants/${id}`);
         setPlant(response.plant);
       } catch (err) {
         console.error('Error fetching plant:', err);

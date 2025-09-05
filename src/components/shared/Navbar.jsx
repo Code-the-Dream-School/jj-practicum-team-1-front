@@ -37,9 +37,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop links */}
+   
         <div className="hidden md:flex items-center gap-2">
-          <NavLink to="/explore" className={link}>
+          <NavLink to="/plants" className={link}>
             Home
           </NavLink>
 
@@ -54,7 +54,7 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <NavLink to="/explore" className={link}>
+              <NavLink to="/plants" className={link}>
                 Explore
               </NavLink>
               <button onClick={logout} className={linkBase}>
@@ -114,7 +114,7 @@ export default function Navbar() {
       >
         <div className="px-2 py-2 space-y-1">
           <NavLink
-            to="/explore"
+            to="/plants"
             className={link}
             onClick={() => setOpen(false)}
           >
@@ -141,7 +141,7 @@ export default function Navbar() {
           ) : (
             <>
               <NavLink
-                to="/explore"
+                to="/plants"
                 className={link}
                 onClick={() => setOpen(false)}
               >

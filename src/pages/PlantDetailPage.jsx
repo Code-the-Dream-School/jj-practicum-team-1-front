@@ -1,27 +1,39 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import api from "../lib/apiClient";
 import Button from "../components/shared/Button";
 import PlantCard from "../components/PlantCard";
 
 export default function PlantDetailPage() {
   const { id } = useParams();
-  console.log("id:", id);
   const navigate = useNavigate();
   const [plant, setPlant] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const location = useLocation();
+  const { state } = location;
+
   // Fetch individual plant from the API
   useEffect(() => {
+    let url;
+
+    if (state.linkedFrom === "plants page") {
+      url = `/plants/${id}`;
+    }
+
+    if (state.linkedFrom === "explorer page") {
+      url = `/identifyPlants/${id}`;
+    }
+
     const fetchPlant = async () => {
       try {
         setLoading(true);
         setError(null);
 
         // Make API call to get single plant
-        const response = await api.get(`/plants/${id}`);
-        setPlant(response.plant);
+        const response = await api.get(url);
+        setPlant(response.plant || response.data);
       } catch (err) {
         console.error("Error fetching plant:", err);
         setError(err.message || "Failed to fetch plant details");
@@ -71,7 +83,7 @@ export default function PlantDetailPage() {
               <p className="text-xl font-semibold">Plant not found</p>
               <p className="text-sm text-gray-600 mt-2">{error}</p>
             </div>
-            <Button onClick={() => navigate("/plants")}>Back to Plants</Button>
+            <Button onClick={() => navigate(-1)}>Go Back</Button>
           </div>
         </div>
       </div>
@@ -87,8 +99,8 @@ export default function PlantDetailPage() {
             <p className="text-xl font-semibold text-gray-600">
               Plant not found
             </p>
-            <Button onClick={() => navigate("/plants")} className="mt-4">
-              Back to Plants
+            <Button onClick={() => navigate(-1)} className="mt-4">
+              Go Back
             </Button>
           </div>
         </div>
@@ -103,7 +115,7 @@ export default function PlantDetailPage() {
         <div className="mb-6">
           <Button
             variant="outline"
-            onClick={() => navigate("/plants")}
+            onClick={() => navigate(-1)}
             className="flex items-center"
           >
             <svg
@@ -119,7 +131,7 @@ export default function PlantDetailPage() {
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Back to Plants
+            Go Back
           </Button>
         </div>
 

@@ -87,7 +87,7 @@ export default function PlantsPage() {
         </div>
 
         {/* Plant Grid */}
-        <PlantGrid plants={plants} />
+        <PlantGrid plants={plants} linkedFrom="plants page" />
       </div>
     </main>
   );

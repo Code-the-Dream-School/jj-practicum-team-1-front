@@ -12,7 +12,7 @@ export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
     scientific_name,
     origin,
     hardiness_zones,
-    // hardiness_location, <-- This reveals our API key in the url. Might get rid of this response on the backend
+    // hardiness_location, <-- This reveals our API key in the url. This could be used for a separate api call if we set it up
     description,
     cycle,
     sunlight,
@@ -86,41 +86,100 @@ export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
           <>
             {/* If it contains "id" it came from the plant identifier api */}
             {id && (
-              <>
+              <div className="space-y-3 text-sm text-gray-700">
                 {scientific_name && (
-                  <div>Scientific Name: {scientific_name[0]}</div>
+                  <p>
+                    <span className="font-semibold text-gray-900">
+                      Scientific Name:
+                    </span>{" "}
+                    <span className="italic">{scientific_name[0]}</span>
+                  </p>
                 )}
-                {origin && (
+
+                {origin && origin.length > 0 && (
                   <div>
-                    Origin:
-                    {origin.map((location) => (
-                      <div>{location}</div>
-                    ))}
+                    <span className="font-semibold text-gray-900">Origin:</span>
+                    <ul className="list-disc list-inside ml-2">
+                      {origin.map((location, idx) => (
+                        <li key={idx}>{location}</li>
+                      ))}
+                    </ul>
                   </div>
                 )}
-                {hardiness_zones.min && hardiness_zones.max && (
+
+                {hardiness_zones?.min && hardiness_zones?.max && (
+                  <p>
+                    <span className="font-semibold text-gray-900">
+                      Hardiness Zones:
+                    </span>{" "}
+                    {hardiness_zones.min === hardiness_zones.max
+                      ? hardiness_zones.min
+                      : `${hardiness_zones.min} – ${hardiness_zones.max}`}
+                  </p>
+                )}
+
+                {cycle && (
+                  <p>
+                    <span className="font-semibold text-gray-900">Cycle:</span>{" "}
+                    {cycle}
+                  </p>
+                )}
+
+                {sunlight && sunlight.length > 0 && (
                   <div>
-                    Hardiness Zones:{" "}
-                    {hardiness_zones?.min === hardiness_zones?.max
-                      ? hardiness_zones?.min
-                      : `${hardiness_zones?.min} - ${hardiness_zones?.max}`}
+                    <span className="font-semibold text-gray-900">
+                      Sunlight:
+                    </span>
+                    <ul className="list-disc list-inside ml-2">
+                      {sunlight.map((sunData, idx) => (
+                        <li key={idx}>{sunData}</li>
+                      ))}
+                    </ul>
                   </div>
                 )}
-                {cycle && <div>Cycle: {cycle}</div>}
-                {sunlight && (
-                  <div>
-                    Sunlight:
-                    {sunlight.map((sunData) => (
-                      <div>{sunData}</div>
-                    ))}
-                  </div>
+
+                {growth_rate && (
+                  <p>
+                    <span className="font-semibold text-gray-900">
+                      Growth Rate:
+                    </span>{" "}
+                    {growth_rate}
+                  </p>
                 )}
-                {growth_rate && <div>Growth Rate: {growth_rate}</div>}
-                {care_level && <div>Care Level: {care_level}</div>}
-                {watering && <div>Watering: {watering}</div>}
-                {maintenance && <div>Maintenance: {maintenance}</div>}
-                {description && <div>{description}</div>}
-              </>
+
+                {care_level && (
+                  <p>
+                    <span className="font-semibold text-gray-900">
+                      Care Level:
+                    </span>{" "}
+                    {care_level}
+                  </p>
+                )}
+
+                {watering && (
+                  <p>
+                    <span className="font-semibold text-gray-900">
+                      Watering:
+                    </span>{" "}
+                    {watering}
+                  </p>
+                )}
+
+                {maintenance && (
+                  <p>
+                    <span className="font-semibold text-gray-900">
+                      Maintenance:
+                    </span>{" "}
+                    {maintenance}
+                  </p>
+                )}
+
+                {description && (
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {description}
+                  </p>
+                )}
+              </div>
             )}
 
             {/* If it contains "_id" it came from the plants collection api */}

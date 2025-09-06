@@ -3,6 +3,53 @@ import api from "../lib/apiClient";
 import PlantGrid from "../components/PlantGrid";
 import Button from "../components/shared/Button";
 
+// **`` Temporary data while not actually calling the api
+const res = {
+  data: [
+    {
+      id: 7,
+      common_name: "Alpine Fir",
+      scientific_name: ["Abies lasiocarpa"],
+      default_image: {
+        license: 5,
+        license_name: "Attribution-ShareAlike License",
+        license_url: "https://creativecommons.org/licenses/by-sa/2.0/",
+        original_url:
+          "https://perenual.com/storage/species_image/7_abies_lasiocarpa/og/51002756843_74fae3c2fa_b.jpg",
+        regular_url:
+          "https://perenual.com/storage/species_image/7_abies_lasiocarpa/regular/51002756843_74fae3c2fa_b.jpg",
+        medium_url:
+          "https://perenual.com/storage/species_image/7_abies_lasiocarpa/medium/51002756843_74fae3c2fa_b.jpg",
+        small_url:
+          "https://perenual.com/storage/species_image/7_abies_lasiocarpa/small/51002756843_74fae3c2fa_b.jpg",
+        thumbnail:
+          "https://perenual.com/storage/species_image/7_abies_lasiocarpa/thumbnail/51002756843_74fae3c2fa_b.jpg",
+      },
+    },
+    {
+      id: 82,
+      common_name: "Nishiki Gawa Japanese Maple*",
+      scientific_name: ["Acer palmatum 'Nishiki Gawa'"],
+      default_image: {
+        license: 451,
+        license_name: "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
+        license_url: "https://creativecommons.org/publicdomain/zero/1.0/",
+        original_url:
+          "https://perenual.com/storage/species_image/82_acer_palmatum_nishiki_gawa/og/pexels-photo-4977537.jpg",
+        regular_url:
+          "https://perenual.com/storage/species_image/82_acer_palmatum_nishiki_gawa/regular/pexels-photo-4977537.jpg",
+        medium_url:
+          "https://perenual.com/storage/species_image/82_acer_palmatum_nishiki_gawa/medium/pexels-photo-4977537.jpg",
+        small_url:
+          "https://perenual.com/storage/species_image/82_acer_palmatum_nishiki_gawa/small/pexels-photo-4977537.jpg",
+        thumbnail:
+          "https://perenual.com/storage/species_image/82_acer_palmatum_nishiki_gawa/thumbnail/pexels-photo-4977537.jpg",
+      },
+    },
+  ],
+  total: 2,
+};
+
 export default function ExplorerPage() {
   const [plants, setPlants] = useState([]);
   const [searchName, setSearchName] = useState("");
@@ -19,7 +66,8 @@ export default function ExplorerPage() {
     setIsLoading(true);
 
     try {
-      const res = await api.get(`/identifyPlants?name=${searchName}`);
+      // **`` This is the actual api call when you want to reactivate it
+      //   const res = await api.get(`/identifyPlants?name=${searchName}`);
       console.log("res:", res);
       setPlants(res.data || []);
       setSearchName("");
@@ -38,20 +86,27 @@ export default function ExplorerPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Explorer Page
           </h1>
+          <div className="max-w-sm">
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <label
+                htmlFor="plant-search"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Search for plants
+              </label>
 
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="plant-search">Search for plants</label>
-            <input
-              style={{ border: "solid 2px black", borderRadius: "5px" }}
-              id="plant-search"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-            />
+              <input
+                id="plant-search"
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:ring focus:ring-green-300 focus:ring-opacity-50"
+              />
 
-            <Button type="submit" disabled={isLoading}>
-              Search
-            </Button>
-          </form>
+              <Button type="submit" disabled={isLoading}>
+                Search
+              </Button>
+            </form>
+          </div>
         </div>
 
         {error && (

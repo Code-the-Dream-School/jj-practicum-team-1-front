@@ -1,7 +1,9 @@
 import { useState } from "react";
 import api from "../lib/apiClient";
+import PlantGrid from "../components/PlantGrid";
 
 export default function ExplorerPage() {
+  const [plants, setPlants] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -18,6 +20,7 @@ export default function ExplorerPage() {
     try {
       const res = await api.get(`/identifyPlants?name=${searchName}`);
       console.log("res:", res);
+      setPlants(res.data || []);
       setSearchName("");
     } catch (error) {
       console.error("Error searching for plants:", error);
@@ -39,6 +42,7 @@ export default function ExplorerPage() {
           value={searchName}
           onChange={(e) => setSearchName(e.target.value)}
         />
+
         <button
           style={{ background: "lightgrey" }}
           type="submit"
@@ -49,6 +53,8 @@ export default function ExplorerPage() {
       </form>
 
       {error && <p>{error}</p>}
+      {isLoading && <p>Loading...</p>}
+      <PlantGrid plants={plants} />
     </main>
   );
 }

@@ -2,7 +2,18 @@ import { useNavigate } from "react-router-dom";
 
 export default function PlantCard({ plant, disableClick = false }) {
   const navigate = useNavigate();
-  const { _id, name, imageURL, notes, location, createdAt } = plant;
+
+  const {
+    _id,
+    id,
+    name,
+    common_name,
+    imageURL,
+    default_image,
+    notes,
+    location,
+    createdAt,
+  } = plant;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -13,12 +24,13 @@ export default function PlantCard({ plant, disableClick = false }) {
     });
   };
 
-  const displayImage = imageURL || "/plant-hero.jpg";
+  const displayImage =
+    imageURL || default_image?.medium_url || "/plant-hero.jpg";
 
   // Handle click to navigate to plant detail page
   const handleClick = () => {
     if (!disableClick) {
-      navigate(`/plants/${_id}`);
+      navigate(`/plants/${_id || id}`);
     }
   };
 
@@ -44,7 +56,7 @@ export default function PlantCard({ plant, disableClick = false }) {
       <div className="relative h-48 w-full">
         <img
           src={displayImage}
-          alt={name}
+          alt={name || common_name}
           className="w-full h-full object-cover"
           onError={(e) => {
             e.target.src = "/plant-hero.jpg"; // Fallback if image fails to load
@@ -53,7 +65,9 @@ export default function PlantCard({ plant, disableClick = false }) {
       </div>
 
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{name}</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          {name || common_name}
+        </h3>
 
         {notes && (
           <p className="text-gray-600 text-sm mb-3 line-clamp-3">{notes}</p>

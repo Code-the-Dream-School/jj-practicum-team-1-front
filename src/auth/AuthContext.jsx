@@ -86,11 +86,23 @@ export function AuthProvider({ children }) {
   }, []);
 
 
+  // const logout = useCallback(() => {
+  //   clearApiToken(); 
+  //   setToken(null);
+  //   setUser(null);
+  //   navigate("/");
+  // }, [navigate]);
   const logout = useCallback(() => {
-    clearApiToken(); 
+    clearApiToken();           // clears auth.token from localStorage + api client
     setToken(null);
     setUser(null);
-    navigate("/");
+  
+    // NEW: also clear 'user' from localStorage
+    try {
+      localStorage.removeItem("user");
+    } catch {}
+  
+    navigate("/");             // redirect to home or login page
   }, [navigate]);
 
  

@@ -36,7 +36,7 @@ async function request(
 
   const hasBody = body !== undefined && body !== null;
   const isFormData = body instanceof FormData;
-  
+
   const init = {
     method,
     headers: {
@@ -45,7 +45,12 @@ async function request(
       ...(headers || {}),
     },
     ...(hasBody
-      ? { body: isFormData || typeof body === "string" ? body : JSON.stringify(body) }
+      ? {
+          body:
+            isFormData || typeof body === "string"
+              ? body
+              : JSON.stringify(body),
+        }
       : {}),
     ...(signal ? { signal } : {}),
   };
@@ -62,7 +67,7 @@ async function request(
 
   if (!res.ok) {
     const message =
-      data?.message || data?.error || res.statusText || "Request failed";
+      data?.msg || data?.error || res.statusText || "Request failed";
     const error = new Error(message);
     error.status = res.status;
     error.payload = data;

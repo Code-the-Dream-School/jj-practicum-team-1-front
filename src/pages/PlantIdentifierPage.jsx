@@ -12,7 +12,6 @@ export default function PlantIdentifierPage() {
   // Image identification states
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [isIdentifying, setIsIdentifying] = useState(false);
   const [identifiedPlants, setIdentifiedPlants] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
 
@@ -25,7 +24,7 @@ export default function PlantIdentifierPage() {
 
   // Common states
   const [error, setError] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { token, isAuthenticated } = useAuth();
 
@@ -102,9 +101,28 @@ export default function PlantIdentifierPage() {
     setManualPreviewUrl(null);
   };
 
-  const handleIdentifyPlant = () => {
-    // Just for UI - no API calls
-    // Button works but doesn't do anything yet
+  const handleIdentifyPlant = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+
+      if (selectedFile) {
+        formData.append("images", selectedFile);
+      }
+
+      const res = await api.post("/identifyPlants", formData);
+
+      console.log("res:", res);
+      resetForm();
+      // navigate("/plants");
+    } catch (err) {
+      console.error("Identify plant error:", err);
+      setError(err.message || "Failed to identify plant. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePlantSelect = (plant) => {
@@ -129,7 +147,7 @@ export default function PlantIdentifierPage() {
       return;
     }
 
-    setIsSaving(true);
+    setIsLoading(true);
     setError(null);
 
     try {
@@ -150,7 +168,7 @@ export default function PlantIdentifierPage() {
       console.error("Save manual plant error:", err);
       setError(err.message || "Failed to save plant. Please try again.");
     } finally {
-      setIsSaving(false);
+      setIsLoading(false);
     }
   };
 
@@ -285,10 +303,10 @@ export default function PlantIdentifierPage() {
             <div className="flex justify-center">
               <Button
                 onClick={handleIdentifyPlant}
-                disabled={!selectedFile || isIdentifying}
+                disabled={!selectedFile || isLoading}
               >
                 <div className="flex items-center space-x-2">
-                  {isIdentifying ? (
+                  {isLoading ? (
                     <>
                       <svg
                         className="animate-spin h-5 w-5 text-white"
@@ -471,9 +489,9 @@ export default function PlantIdentifierPage() {
             <div className="flex justify-end mt-6">
               <Button
                 onClick={handleSaveManualPlant}
-                disabled={isSaving || !plantName.trim()}
+                disabled={isLoading || !plantName.trim()}
               >
-                {isSaving ? (
+                {isLoading ? (
                   <>
                     <svg
                       className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -613,12 +631,12 @@ export default function PlantIdentifierPage() {
                   <Button
                     onClick={resetForm}
                     variant="secondary"
-                    disabled={isSaving}
+                    disabled={isLoading}
                   >
                     Cancel
                   </Button>
-                  <Button onClick={handleSavePlant} disabled={isSaving}>
-                    {isSaving ? (
+                  <Button onClick={handleSavePlant} disabled={isLoading}>
+                    {isLoading ? (
                       <>
                         <svg
                           className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"

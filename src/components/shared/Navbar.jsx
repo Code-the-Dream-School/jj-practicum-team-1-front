@@ -145,7 +145,7 @@ export default function Navbar() {
                 className={link}
                 onClick={() => setOpen(false)}
               >
-                Explore
+                My Plants
               </NavLink>
               <button
                 onClick={() => {

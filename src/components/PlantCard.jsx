@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
 export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
-  console.log("linkedFrom:", linkedFrom);
   const navigate = useNavigate();
 
   const {

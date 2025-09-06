@@ -1,4 +1,4 @@
-import PlantGrid from '../components/PlantGrid';
+import PlantGrid from "../components/PlantGrid";
 
 export default function PlantsPage() {
   return (

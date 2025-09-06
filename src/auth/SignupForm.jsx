@@ -10,7 +10,7 @@ export default function SignupForm() {
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ export default function SignupForm() {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -26,13 +26,11 @@ export default function SignupForm() {
     e.preventDefault();
     setError("");
 
-   
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
-   
     if (formData.password.length < 6) {
       setError("Password must be at least 6 characters long");
       return;
@@ -40,12 +38,15 @@ export default function SignupForm() {
 
     setLoading(true);
 
-    console.log("➡️ Trying to sign up with:", { name: formData.name, email: formData.email });
+    console.log("➡️ Trying to sign up with:", {
+      name: formData.name,
+      email: formData.email,
+    });
 
-    const success = await signup({ 
-      name: formData.name, 
-      email: formData.email, 
-      password: formData.password 
+    const success = await signup({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
     });
 
     console.log("Signup result:", success);

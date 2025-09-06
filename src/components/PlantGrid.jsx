@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import api from '../lib/apiClient';
-import PlantCard from './PlantCard';
+import { useState, useEffect } from "react";
+import api from "../lib/apiClient";
+import PlantCard from "./PlantCard";
 
 export default function PlantGrid() {
   const [plants, setPlants] = useState([]);
@@ -12,13 +12,12 @@ export default function PlantGrid() {
       try {
         setLoading(true);
         setError(null);
-        
-   
-        const response = await api.get('/plants');
+
+        const response = await api.get("/plants");
         setPlants(response.plants || []);
       } catch (err) {
-        console.error('Error fetching plants:', err);
-        setError(err.message || 'Failed to fetch plants');
+        console.error("Error fetching plants:", err);
+        setError(err.message || "Failed to fetch plants");
       } finally {
         setLoading(false);
       }
@@ -26,7 +25,6 @@ export default function PlantGrid() {
 
     fetchPlants();
   }, []);
-
 
   if (loading) {
     return (
@@ -41,8 +39,18 @@ export default function PlantGrid() {
     return (
       <div className="text-center py-12">
         <div className="text-red-600 mb-4">
-          <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className="w-12 h-12 mx-auto mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <p className="text-lg font-semibold">Error loading plants</p>
           <p className="text-sm text-gray-600 mt-2">{error}</p>
@@ -57,7 +65,9 @@ export default function PlantGrid() {
       <div className="text-center py-12">
         <div className="text-gray-500">
           <p className="text-lg font-semibold mb-2">No plants found</p>
-          <p className="text-sm">Start by adding your first plant to your collection!</p>
+          <p className="text-sm">
+            Start by adding your first plant to your collection!
+          </p>
         </div>
       </div>
     );

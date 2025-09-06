@@ -59,7 +59,7 @@ async function request(
 
   if (!res.ok) {
     const message =
-      data?.message || data?.error || res.statusText || "Request failed";
+      data?.msg || data?.error || res.statusText || "Request failed";
     const error = new Error(message);
     error.status = res.status;
     error.payload = data;

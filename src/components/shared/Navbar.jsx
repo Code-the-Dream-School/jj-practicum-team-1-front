@@ -4,7 +4,7 @@ import { useAuth } from "../../auth/AuthContext";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const { token, logout } = useAuth(); 
+  const { token, logout } = useAuth();
 
   // Close the mobile menu when resizing to desktop
   useEffect(() => {
@@ -37,9 +37,8 @@ export default function Navbar() {
           </Link>
         </div>
 
-   
         <div className="hidden md:flex items-center gap-2">
-          <NavLink to="/plants" className={link}>
+          <NavLink to="/" className={link}>
             Home
           </NavLink>
 
@@ -54,8 +53,11 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <NavLink to="/plants" className={link}>
+              <NavLink to="/explorer" className={link}>
                 Explore
+              </NavLink>
+              <NavLink to="/plants" className={link}>
+                My Collection
               </NavLink>
               <button onClick={logout} className={linkBase}>
                 Log Out
@@ -98,7 +100,9 @@ export default function Navbar() {
 
       {/* Backdrop (mobile) */}
       <div
-        className={`md:hidden fixed inset-0 bg-black/30 transition-opacity ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`md:hidden fixed inset-0 bg-black/30 transition-opacity ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
@@ -113,11 +117,7 @@ export default function Navbar() {
         }`}
       >
         <div className="px-2 py-2 space-y-1">
-          <NavLink
-            to="/plants"
-            className={link}
-            onClick={() => setOpen(false)}
-          >
+          <NavLink to="/" className={link} onClick={() => setOpen(false)}>
             Home
           </NavLink>
 

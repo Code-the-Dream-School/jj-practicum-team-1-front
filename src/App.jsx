@@ -1,8 +1,11 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/shared/Navbar";
 import LoginPage from "./pages/LoginPage";
-import HomePage from "./pages/HomePage"; // TEMP: Explore placeholder
-import PrivateRoute from "./routes/PrivateRoute"; // adjust if PrivateRoute.jsx is not in /routes
+import SignupPage from "./pages/SignupPage";
+import HomePage from "./pages/HomePage";
+import PlantsPage from "./pages/PlantsPage";
+import PlantDetailPage from "./pages/PlantDetailPage";
+import PrivateRoute from "./routes/PrivateRoute";
 
 export default function App() {
   return (
@@ -10,17 +13,19 @@ export default function App() {
       <Navbar />
       <Routes>
         {/* Public */}
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
 
         {/* Protected */}
         <Route element={<PrivateRoute />}>
-          {/* For now, /explore still uses HomePage as a placeholder */}
-          <Route path="/explore" element={<HomePage />} />
+          <Route path="/explore" element={<PlantsPage />} />
+          <Route path="/plants" element={<PlantsPage />} />
+          <Route path="/plants/:id" element={<PlantDetailPage />} />
         </Route>
 
-        {/* Defaults */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

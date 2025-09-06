@@ -4,7 +4,7 @@ import { useAuth } from "../../auth/AuthContext";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const { token, logout } = useAuth(); 
+  const { token, logout } = useAuth(); // token = logged-in status
 
   // Close the mobile menu when resizing to desktop
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Close on Escape
+  // Close on Escape key
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
@@ -37,12 +37,14 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop links */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-2">
-          <NavLink to="/explore" className={link}>
+          {/* Home - always visible */}
+          <NavLink to="/" className={link}>
             Home
           </NavLink>
 
+          {/* When logged out */}
           {!token ? (
             <>
               <NavLink to="/login" className={link}>
@@ -54,8 +56,12 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <NavLink to="/explore" className={link}>
+              {/* Logged-in menu */}
+              <NavLink to="/plants" className={link}>
                 Explore
+              </NavLink>
+              <NavLink to="/collections" className={link}>
+                My Collections
               </NavLink>
               <button onClick={logout} className={linkBase}>
                 Log Out
@@ -64,7 +70,7 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile toggle */}
+        {/* Mobile toggle button */}
         <button
           type="button"
           className="md:hidden inline-flex items-center justify-center rounded-md p-2 hover:bg-green-700/40 focus:outline-none focus:ring-2 focus:ring-white/50"
@@ -96,14 +102,16 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Backdrop (mobile) */}
+      {/* Backdrop for mobile */}
       <div
-        className={`md:hidden fixed inset-0 bg-black/30 transition-opacity ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`md:hidden fixed inset-0 bg-black/30 transition-opacity ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
 
-      {/* Mobile panel */}
+      {/* Mobile Menu */}
       <div
         id="mobile-menu"
         className={`md:hidden absolute left-0 right-0 top-[56px] sm:top-[60px] bg-green-800 shadow-lg transition-all duration-200 origin-top ${
@@ -113,8 +121,9 @@ export default function Navbar() {
         }`}
       >
         <div className="px-2 py-2 space-y-1">
+          {/* Home - always visible */}
           <NavLink
-            to="/explore"
+            to="/"
             className={link}
             onClick={() => setOpen(false)}
           >
@@ -141,11 +150,18 @@ export default function Navbar() {
           ) : (
             <>
               <NavLink
-                to="/explore"
+                to="/plants"
                 className={link}
                 onClick={() => setOpen(false)}
               >
                 Explore
+              </NavLink>
+              <NavLink
+                to="/collections"
+                className={link}
+                onClick={() => setOpen(false)}
+              >
+                My Collections
               </NavLink>
               <button
                 onClick={() => {

@@ -21,91 +21,73 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const saved = getStoredToken();
     if (saved) {
-      setApiToken(saved); 
-      setToken(saved); 
+      setApiToken(saved);
+      setToken(saved);
+      try {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) setUser(JSON.parse(savedUser));
+      } catch {}
     }
     setLoading(false);
   }, []);
 
-
   const login = useCallback(async ({ email, password }) => {
     try {
- 
       const data = await api.post("/auth/login", { email, password });
 
       if (!data?.token) {
         throw new Error("Login did not return a token");
       }
 
-
       setApiToken(data.token);
       setToken(data.token);
 
       if (data.user) {
         setUser(data.user);
-        
         localStorage.setItem("user", JSON.stringify(data.user));
       }
 
-      return true; 
+      return true;
     } catch (err) {
-      console.error("Login error:", err); 
-      return false; 
+      console.error("Login error:", err);
+      return false;
     }
   }, []);
 
-
   const signup = useCallback(async ({ name, email, password }) => {
     try {
-      
       const data = await api.post("/auth/register", { name, email, password });
 
       if (!data?.token) {
         throw new Error("Signup did not return a token");
       }
 
-    
       setApiToken(data.token);
       setToken(data.token);
 
       if (data.user) {
         setUser(data.user);
-  
         localStorage.setItem("user", JSON.stringify(data.user));
       }
 
       return true;
     } catch (err) {
-      console.error("Signup error:", err); 
-      return false; 
+      console.error("Signup error:", err);
+      return false;
     }
   }, []);
 
-
-  // const logout = useCallback(() => {
-  //   clearApiToken(); 
-  //   setToken(null);
-  //   setUser(null);
-  //   navigate("/");
-  // }, [navigate]);
   const logout = useCallback(() => {
-    clearApiToken();           // clears auth.token from localStorage + api client
+    clearApiToken();
     setToken(null);
     setUser(null);
-  
-    // NEW: also clear 'user' from localStorage
-    try {
-      localStorage.removeItem("user");
-    } catch {}
-  
-    navigate("/");             // redirect to home or login page
+    try { localStorage.removeItem("user"); } catch {}
+    navigate("/");
   }, [navigate]);
 
- 
   const value = useMemo(
     () => ({
       token,

@@ -3,13 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
 export default function LoginForm() {
-  const { login } = useAuth(); 
+  const { login } = useAuth();
   const navigate = useNavigate();
-
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,16 +19,13 @@ export default function LoginForm() {
 
     console.log("➡️ Trying to log in with:", email); // debug
 
- 
     const success = await login({ email, password });
 
     console.log("✅ Login result:", success); // debug
 
     if (success) {
-     
       navigate("/plants");
     } else {
-   
       setError("Invalid email or password");
     }
 

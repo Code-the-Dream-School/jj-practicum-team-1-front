@@ -1,10 +1,18 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/shared/Navbar";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
 import PlantsPage from "./pages/PlantsPage";
 import PlantDetailPage from "./pages/PlantDetailPage";
+import PageNotFound from "./pages/PageNotFound";
+import ExplorerPage from "./pages/ExplorePage";
 import PrivateRoute from "./routes/PrivateRoute";
 
 export default function App() {
@@ -19,13 +27,14 @@ export default function App() {
 
         {/* Protected */}
         <Route element={<PrivateRoute />}>
-          <Route path="/explore" element={<PlantsPage />} />
           <Route path="/plants" element={<PlantsPage />} />
           <Route path="/plants/:id" element={<PlantDetailPage />} />
+          <Route path="/explorer" element={<ExplorerPage />} />
         </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* 404 */}
+        <Route path="/page-not-found" element={<PageNotFound />} />
+        <Route path="*" element={<Navigate to="/page-not-found" replace />} />
       </Routes>
     </>
   );

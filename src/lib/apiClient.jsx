@@ -35,14 +35,17 @@ async function request(
   const url = `${API_URL}${path.startsWith("/") ? path : `/${path}`}`;
 
   const hasBody = body !== undefined && body !== null;
+  const isFormData = body instanceof FormData;
+  
   const init = {
     method,
     headers: {
-      ...(hasBody ? { "Content-Type": "application/json" } : {}),
+      // Don't set Content-Type for FormData - let browser set it with boundary
+      ...(hasBody && !isFormData ? { "Content-Type": "application/json" } : {}),
       ...(headers || {}),
     },
     ...(hasBody
-      ? { body: typeof body === "string" ? body : JSON.stringify(body) }
+      ? { body: isFormData || typeof body === "string" ? body : JSON.stringify(body) }
       : {}),
     ...(signal ? { signal } : {}),
   };

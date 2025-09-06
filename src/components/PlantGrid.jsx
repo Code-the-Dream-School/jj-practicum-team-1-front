@@ -69,6 +69,7 @@ export default function PlantGrid() {
       {plants.map((plant) => (
         <PlantCard key={plant._id} plant={plant} />
       ))}
+   
     </div>
   );
 }

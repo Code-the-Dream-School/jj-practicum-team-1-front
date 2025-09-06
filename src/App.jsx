@@ -6,6 +6,7 @@ import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
 import PlantsPage from "./pages/PlantsPage";
 import PlantDetailPage from "./pages/PlantDetailPage";
+import PlantIdentifierPage from "./pages/PlantIdentifierPage";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/plants" element={<PlantsPage />} />
         <Route path="/plants/:id" element={<PlantDetailPage />} />
+        <Route path="/identify" element={<PlantIdentifierPage />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </>

@@ -1,7 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
-export default function PlantCard({ plant, disableClick = false }) {
-  const navigate = useNavigate();
+export default function PlantCard({ plant }) {
   const { _id, name, imageURL, notes, location, createdAt } = plant;
 
 
@@ -17,28 +14,9 @@ export default function PlantCard({ plant, disableClick = false }) {
 
   const displayImage = imageURL || '/plant-hero.jpg';
 
-  // Handle click to navigate to plant detail page
-  const handleClick = () => {
-    if (!disableClick) {
-      navigate(`/plants/${_id}`);
-    }
-  };
 
   return (
-    <div 
-      className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 ${
-        !disableClick ? 'cursor-pointer hover:scale-105 transform' : ''
-      }`}
-      onClick={handleClick}
-      role={!disableClick ? "button" : undefined}
-      tabIndex={!disableClick ? 0 : undefined}
-      onKeyDown={!disableClick ? (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleClick();
-        }
-      } : undefined}
-    >
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
  
       <div className="relative h-48 w-full">
         <img

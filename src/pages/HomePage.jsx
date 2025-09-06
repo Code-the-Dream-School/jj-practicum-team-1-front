@@ -37,7 +37,7 @@ export default function HomePage() {
               An app for recording and identifying plants
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-              <Link to="/plants">
+              <Link to="/explorer">
                 <Button>Explore Plants</Button>
               </Link>
             </div>

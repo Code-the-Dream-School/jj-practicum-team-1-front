@@ -11,6 +11,7 @@ export default function PlantGrid({ plants, linkedFrom }) {
           linkedFrom={linkedFrom}
         />
       ))}
+   
     </div>
   );
 }

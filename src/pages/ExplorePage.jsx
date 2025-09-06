@@ -68,7 +68,6 @@ export default function ExplorerPage() {
     try {
       // **`` This is the actual api call when you want to reactivate it
       //   const res = await api.get(`/identifyPlants?name=${searchName}`);
-      console.log("res:", res);
       setPlants(res.data || []);
       setSearchName("");
     } catch (error) {

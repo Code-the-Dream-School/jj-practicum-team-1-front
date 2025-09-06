@@ -32,6 +32,7 @@ export default function Navbar() {
           <Link to="/" onClick={() => setOpen(false)}>PlantApp</Link>
         </div>
 
+        {/* Desktop */}
         <div className="hidden md:flex items-center gap-2">
           <NavLink to="/" className={link}>Home</NavLink>
 
@@ -89,7 +90,10 @@ export default function Navbar() {
             </>
           ) : (
             <>
+              {/* Keep both, matching desktop */}
               <NavLink to="/explorer" className={link} onClick={() => setOpen(false)}>Explore</NavLink>
+              <NavLink to="/plants" className={link} onClick={() => setOpen(false)}>My Collection</NavLink>
+
               <button
                 onClick={() => { logout(); setOpen(false); }}
                 className={linkBase}

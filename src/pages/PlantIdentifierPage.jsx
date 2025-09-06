@@ -1,41 +1,58 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../lib/apiClient';
-import PlantCard from '../components/PlantCard';
-import Button from '../components/shared/Button';
-import { useAuth } from '../auth/AuthContext';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../lib/apiClient";
+import PlantCard from "../components/PlantCard";
+import Button from "../components/shared/Button";
+import { useAuth } from "../auth/AuthContext";
 
 export default function PlantIdentifierPage() {
   // Mode selection
-  const [mode, setMode] = useState('identify'); // 'identify' or 'manual'
-  
+  const [mode, setMode] = useState("identify"); // 'identify' or 'manual'
+
   // Image identification states
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isIdentifying, setIsIdentifying] = useState(false);
   const [identifiedPlants, setIdentifiedPlants] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState(null);
-  
+
   // Manual entry states
-  const [plantName, setPlantName] = useState('');
-  const [plantNotes, setPlantNotes] = useState('');
-  const [plantLocation, setPlantLocation] = useState('');
+  const [plantName, setPlantName] = useState("");
+  const [plantNotes, setPlantNotes] = useState("");
+  const [plantLocation, setPlantLocation] = useState("");
   const [manualImage, setManualImage] = useState(null);
   const [manualPreviewUrl, setManualPreviewUrl] = useState(null);
-  
+
   // Common states
   const [error, setError] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const { token, isAuthenticated } = useAuth();
 
+  const resetForm = () => {
+    setError(null);
+    // Reset identification mode states
+    setSelectedFile(null);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
+    setIdentifiedPlants([]);
+    setSelectedPlant(null);
+    // Reset manual mode states
+    setPlantName("");
+    setPlantNotes("");
+    setPlantLocation("");
+    setManualImage(null);
+    if (manualPreviewUrl) URL.revokeObjectURL(manualPreviewUrl);
+    setManualPreviewUrl(null);
+  };
+
   const validateImageFile = (file) => {
-    if (!file.type.startsWith('image/')) {
-      setError('Please select a valid image file.');
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file.");
       return false;
     }
     if (file.size > 5 * 1024 * 1024) {
-      setError('File size must be less than 5MB.');
+      setError("File size must be less than 5MB.");
       return false;
     }
     return true;
@@ -77,15 +94,13 @@ export default function PlantIdentifierPage() {
     setIdentifiedPlants([]);
     setSelectedPlant(null);
     // Reset manual mode states
-    setPlantName('');
-    setPlantNotes('');
-    setPlantLocation('');
+    setPlantName("");
+    setPlantNotes("");
+    setPlantLocation("");
     setManualImage(null);
     if (manualPreviewUrl) URL.revokeObjectURL(manualPreviewUrl);
     setManualPreviewUrl(null);
   };
-
-
 
   const handleIdentifyPlant = () => {
     // Just for UI - no API calls
@@ -98,21 +113,19 @@ export default function PlantIdentifierPage() {
   };
 
   const handleSavePlant = () => {
-    // Just for UI - no API calls  
+    // Just for UI - no API calls
     // Button works but doesn't do anything yet
   };
 
- 
-
   const handleSaveManualPlant = async () => {
     if (!plantName.trim()) {
-      setError('Please enter a plant name.');
+      setError("Please enter a plant name.");
       return;
     }
 
     if (!isAuthenticated) {
-      setError('Please log in to save plants.');
-      navigate('/login');
+      setError("Please log in to save plants.");
+      navigate("/login");
       return;
     }
 
@@ -121,26 +134,25 @@ export default function PlantIdentifierPage() {
 
     try {
       const formData = new FormData();
-      formData.append('name', plantName.trim());
-      formData.append('notes', plantNotes);
-      formData.append('location', plantLocation);
-      
+      formData.append("name", plantName.trim());
+      formData.append("notes", plantNotes);
+      formData.append("location", plantLocation);
+
       if (manualImage) {
-        formData.append('file', manualImage);
+        formData.append("file", manualImage);
       }
 
-      await api.post('/plants', formData);
+      await api.post("/plants", formData);
 
       resetForm();
-      navigate('/plants');
+      navigate("/plants");
     } catch (err) {
-      console.error('Save manual plant error:', err);
-      setError(err.message || 'Failed to save plant. Please try again.');
+      console.error("Save manual plant error:", err);
+      setError(err.message || "Failed to save plant. Please try again.");
     } finally {
       setIsSaving(false);
     }
   };
-
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -155,29 +167,52 @@ export default function PlantIdentifierPage() {
           </p>
         </div>
 
-
-   
         <div className="flex justify-center space-x-4 mb-6">
           <Button
-            onClick={() => switchMode('identify')}
-            variant={mode === 'identify' ? 'primary' : 'outline'}
+            onClick={() => switchMode("identify")}
+            variant={mode === "identify" ? "primary" : "outline"}
           >
             <div className="flex items-center space-x-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
               </svg>
               <span>Identify from Photo</span>
             </div>
           </Button>
-          
+
           <Button
-            onClick={() => switchMode('manual')}
-            variant={mode === 'manual' ? 'primary' : 'outline'}
+            onClick={() => switchMode("manual")}
+            variant={mode === "manual" ? "primary" : "outline"}
           >
             <div className="flex items-center space-x-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
               </svg>
               <span>Add Manually</span>
             </div>
@@ -185,12 +220,12 @@ export default function PlantIdentifierPage() {
         </div>
 
         {/* Identify Mode - Upload Section */}
-        {mode === 'identify' && (
+        {mode === "identify" && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               Upload Plant Image
             </h2>
-            
+
             <div className="mb-4">
               <input
                 type="file"
@@ -236,9 +271,12 @@ export default function PlantIdentifierPage() {
                       />
                     </svg>
                     <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">Click to upload</span> or drag and drop
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
                     </p>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, GIF up to 5MB
+                    </p>
                   </div>
                 )}
               </label>
@@ -252,17 +290,48 @@ export default function PlantIdentifierPage() {
                 <div className="flex items-center space-x-2">
                   {isIdentifying ? (
                     <>
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       <span>Identifying Plant...</span>
                     </>
                   ) : (
                     <>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
                       </svg>
                       <span>Identify Plant</span>
                     </>
@@ -273,18 +342,20 @@ export default function PlantIdentifierPage() {
           </div>
         )}
 
- 
-        {mode === 'manual' && (
+        {mode === "manual" && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               Add Plant Manually
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column - Plant Details */}
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="plant-name" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="plant-name"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Plant Name *
                   </label>
                   <input
@@ -299,7 +370,10 @@ export default function PlantIdentifierPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="manual-notes" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="manual-notes"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Notes (optional)
                   </label>
                   <textarea
@@ -313,7 +387,10 @@ export default function PlantIdentifierPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="manual-location" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="manual-location"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Location (optional)
                   </label>
                   <input
@@ -327,7 +404,6 @@ export default function PlantIdentifierPage() {
                 </div>
               </div>
 
-         
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Plant Image (optional)
@@ -355,7 +431,8 @@ export default function PlantIdentifierPage() {
                           onClick={(e) => {
                             e.preventDefault();
                             setManualImage(null);
-                            if (manualPreviewUrl) URL.revokeObjectURL(manualPreviewUrl);
+                            if (manualPreviewUrl)
+                              URL.revokeObjectURL(manualPreviewUrl);
                             setManualPreviewUrl(null);
                           }}
                           className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors"
@@ -381,7 +458,9 @@ export default function PlantIdentifierPage() {
                         <p className="mb-2 text-sm text-gray-500">
                           <span className="font-semibold">Click to upload</span>
                         </p>
-                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                        <p className="text-xs text-gray-500">
+                          PNG, JPG, GIF up to 5MB
+                        </p>
                       </div>
                     )}
                   </label>
@@ -396,34 +475,56 @@ export default function PlantIdentifierPage() {
               >
                 {isSaving ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
                     </svg>
                     Saving...
                   </>
                 ) : (
-                  'Add to Collection'
+                  "Add to Collection"
                 )}
               </Button>
             </div>
           </div>
         )}
 
-     
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
             <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                  clipRule="evenodd"
+                />
               </svg>
               {error}
             </div>
           </div>
         )}
 
-     
-        {mode === 'identify' && identifiedPlants.length > 0 && (
+        {mode === "identify" && identifiedPlants.length > 0 && (
           <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               Identified Plants ({identifiedPlants.length})
@@ -431,15 +532,15 @@ export default function PlantIdentifierPage() {
             <p className="text-gray-600 mb-4">
               Select the plant that matches your image:
             </p>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               {identifiedPlants.map((plant, index) => (
                 <div
                   key={plant.id || index}
                   className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                     selectedPlant?.id === plant.id
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-200 hover:border-gray-300"
                   }`}
                   onClick={() => handlePlantSelect(plant)}
                 >
@@ -451,10 +552,10 @@ export default function PlantIdentifierPage() {
                     />
                   )}
                   <h3 className="font-semibold text-sm text-gray-900">
-                    {plant.common_name || 'Unknown Common Name'}
+                    {plant.common_name || "Unknown Common Name"}
                   </h3>
                   <p className="text-xs text-gray-600 italic">
-                    {plant.scientific_name || 'Unknown Scientific Name'}
+                    {plant.scientific_name || "Unknown Scientific Name"}
                   </p>
                   {plant.cycle && (
                     <p className="text-xs text-gray-500 mt-1">
@@ -471,10 +572,13 @@ export default function PlantIdentifierPage() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Add to Your Collection
                 </h3>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label htmlFor="plant-notes" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="plant-notes"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Notes (optional)
                     </label>
                     <textarea
@@ -486,9 +590,12 @@ export default function PlantIdentifierPage() {
                       placeholder="Add any notes about this plant..."
                     />
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="plant-location" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="plant-location"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Location (optional)
                     </label>
                     <input
@@ -510,20 +617,33 @@ export default function PlantIdentifierPage() {
                   >
                     Cancel
                   </Button>
-                  <Button
-                    onClick={handleSavePlant}
-                    disabled={isSaving}
-                  >
+                  <Button onClick={handleSavePlant} disabled={isSaving}>
                     {isSaving ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Saving...
                       </>
                     ) : (
-                      'Add to Collection'
+                      "Add to Collection"
                     )}
                   </Button>
                 </div>

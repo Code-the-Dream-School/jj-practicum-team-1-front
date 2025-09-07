@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
+export default function PlantCard({
+  plant,
+  disableClick = false,
+  linkedFrom,
+  onDelete,
+}) {
   const navigate = useNavigate();
 
   const {
@@ -25,6 +30,14 @@ export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
     location,
     createdAt,
   } = plant;
+
+  const plantId = _id || id;
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // don’t navigate to details
+    e.preventDefault();
+    if (onDelete && plantId) onDelete(plantId);
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -73,6 +86,17 @@ export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
             e.target.src = "/plant-hero.jpg"; // Fallback if image fails to load
           }}
         />
+        {/* DELETE button: show only on collection grid (has _id) and not on details page */}
+        {onDelete && _id && !disableClick && (
+          <button
+            onClick={handleDeleteClick}
+            className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-red-600 text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400"
+            aria-label="Delete plant"
+            title="Delete"
+          >
+            Delete
+          </button>
+        )}
       </div>
 
       <div className="p-4">

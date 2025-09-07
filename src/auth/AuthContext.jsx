@@ -26,6 +26,10 @@ export function AuthProvider({ children }) {
     if (saved) {
       setApiToken(saved);
       setToken(saved);
+      try {
+        const savedUser = localStorage.getItem("user");
+        if (savedUser) setUser(JSON.parse(savedUser));
+      } catch {}
     }
     setLoading(false);
   }, []);
@@ -43,7 +47,6 @@ export function AuthProvider({ children }) {
 
       if (data.user) {
         setUser(data.user);
-
         localStorage.setItem("user", JSON.stringify(data.user));
       }
 
@@ -67,7 +70,6 @@ export function AuthProvider({ children }) {
 
       if (data.user) {
         setUser(data.user);
-
         localStorage.setItem("user", JSON.stringify(data.user));
       }
 
@@ -82,6 +84,7 @@ export function AuthProvider({ children }) {
     clearApiToken();
     setToken(null);
     setUser(null);
+    try { localStorage.removeItem("user"); } catch {}
     navigate("/");
   }, [navigate]);
 

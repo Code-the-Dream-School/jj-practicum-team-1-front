@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import api from "../lib/apiClient";
 import Button from "../components/shared/Button";
 import { useNavigate } from "react-router-dom";
+import EditPlantModal from "../components/EditPlantModal";
 
 export default function PlantsPage() {
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editing, setEditing] = useState(null);
 
   const navigate = useNavigate();
 
@@ -32,6 +34,10 @@ export default function PlantsPage() {
     fetchPlants();
   }, []);
 
+  // open/close edit modal
+  const openEdit = (plant) => setEditing(plant);
+  const closeEdit = () => setEditing(null);
+
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this plant?")) return;
 
@@ -43,6 +49,39 @@ export default function PlantsPage() {
     } catch (e) {
       setPlants(prev); // revert if error
       alert(e.message || "Delete failed");
+    }
+  };
+
+  // EDIT save handler (optimistic + PATCH)
+  const handleEditSave = async (form) => {
+    const id = editing?._id || editing?.id;
+    if (!id) return;
+
+    // build PATCH body only with non-empty values
+    const patch = {};
+    if (form.name.trim() !== "") patch.name = form.name.trim();
+    if (form.location.trim() !== "") patch.location = form.location.trim();
+    if (form.notes.trim() !== "") patch.notes = form.notes.trim();
+
+    // if nothing to update
+    if (Object.keys(patch).length === 0) {
+      alert("Please fill at least one field before saving.");
+      return;
+    }
+
+    const prev = plants;
+
+    // optimistic update
+    setPlants((list) =>
+      list.map((p) => ((p._id || p.id) === id ? { ...p, ...patch } : p))
+    );
+
+    try {
+      await api.patch(`/plants/${id}`, patch);
+      closeEdit();
+    } catch (e) {
+      setPlants(prev); // revert if error
+      alert(e?.response?.data?.message || e.message || "Update failed");
     }
   };
 
@@ -135,8 +174,17 @@ export default function PlantsPage() {
           plants={plants}
           linkedFrom="plants page"
           onDelete={handleDelete}
+          onEdit={openEdit}
         />
       </div>
+      {/* Render modal at the bottom of the component return */}
+      {editing && (
+        <EditPlantModal
+          plant={editing}
+          onClose={closeEdit}
+          onSave={handleEditSave}
+        />
+      )}
     </main>
   );
 }

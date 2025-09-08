@@ -5,6 +5,7 @@ export default function PlantCard({
   disableClick = false,
   linkedFrom,
   onDelete,
+  onEdit,
 }) {
   const navigate = useNavigate();
 
@@ -37,6 +38,12 @@ export default function PlantCard({
     e.stopPropagation(); // don’t navigate to details
     e.preventDefault();
     if (onDelete && plantId) onDelete(plantId);
+  };
+
+  const handleEditClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (onEdit && plantId) onEdit(plant); // pass the whole plant to prefill the modal
   };
 
   const formatDate = (dateString) => {
@@ -86,25 +93,51 @@ export default function PlantCard({
             e.target.src = "/plant-hero.jpg"; // Fallback if image fails to load
           }}
         />
-        {/* DELETE button: show only on collection grid (has _id) and not on details page */}
-        {onDelete && _id && !disableClick && (
-          <button
-            onClick={handleDeleteClick}
-            className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-red-600 text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-10"
-            aria-label="Delete plant"
-            title="Delete"
-          >
-            <svg
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 32 32"
-            >
-              <g data-name="70-Trash">
-                <path d="m29.89 6.55-1-2A1 1 0 0 0 28 4h-7V2a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2H4a1 1 0 0 0-.89.55l-1 2A1 1 0 0 0 3 8h2v22a2 2 0 0 0 .47 1.41A2 2 0 0 0 7 32h18a2 2 0 0 0 2-2V8h2a1 1 0 0 0 .89-1.45zM13 2h6v2h-6zm12 28H7V8h18z" />
-                <path d="M17 26V10a2 2 0 0 0-2 2l.06 14H15v2a2 2 0 0 0 2-2zM22 26V10a2 2 0 0 0-2 2l.06 14H20v2a2 2 0 0 0 2-2zM12 26V10a2 2 0 0 0-2 2l.06 14H10v2a2 2 0 0 0 2-2z" />
-              </g>
-            </svg>
-          </button>
+       
+        {/* EDIT + DELETE buttons container */}
+        {_id && !disableClick && (
+          <div className="absolute top-2 right-2 flex gap-2">
+            {/* Edit button */}
+            {onEdit && (
+              <button
+                onClick={handleEditClick}
+                className="px-2 py-1 text-xs rounded bg-gray-800 text-white/90 shadow hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 w-10"
+                aria-label="Edit plant"
+                title="Edit"
+              >
+                {/* Simple pencil icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M13.586 3.586a2 2 0 0 1 2.828 2.828l-8.25 8.25a2 2 0 0 1-.878.514l-3.06.817a.75.75 0 0 1-.916-.916l.816-3.06a2 2 0 0 1 .515-.878l8.25-8.25Z" />
+                  <path d="M5.121 13.379 6.62 14.88" />
+                </svg>
+              </button>
+            )}
+
+            {/* Delete button - unchanged */}
+            {onDelete && (
+              <button
+                onClick={handleDeleteClick}
+                className="px-2 py-1 text-xs rounded bg-red-600 text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-10"
+                aria-label="Delete plant"
+                title="Delete"
+              >
+                <svg
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 32 32"
+                >
+                  <g data-name="70-Trash">
+                    <path d="m29.89 6.55-1-2A1 1 0 0 0 28 4h-7V2a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2H4a1 1 0 0 0-.89.55l-1 2A1 1 0 0 0 3 8h2v22a2 2 0 0 0 .47 1.41A2 2 0 0 0 7 32h18a2 2 0 0 0 2-2V8h2a1 1 0 0 0 .89-1.45zM13 2h6v2h-6zm12 28H7V8h18z" />
+                    <path d="M17 26V10a2 2 0 0 0-2 2l.06 14H15v2a2 2 0 0 0 2-2zM22 26V10a2 2 0 0 0-2 2l.06 14H20v2a2 2 0 0 0 2-2zM12 26V10a2 2 0 0 0-2 2l.06 14H10v2a2 2 0 0 0 2-2z" />
+                  </g>
+                </svg>
+              </button>
+            )}
+          </div>
         )}
       </div>
 

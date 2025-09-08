@@ -17,7 +17,9 @@ export default function PlantsPage() {
         setLoading(true);
         setError(null);
 
-        const response = await api.get("/plants?sort=-createdAt&limit=10&page=1");
+        const response = await api.get(
+          "/plants?sort=-createdAt&limit=10&page=1"
+        );
         setPlants(response.plants || []);
       } catch (err) {
         console.error("Error fetching plants:", err);
@@ -29,21 +31,15 @@ export default function PlantsPage() {
 
     fetchPlants();
   }, []);
-  // Delete handler (optimistic)
+
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this plant?")) return;
-  
+
     const prev = plants;
     setPlants((list) => list.filter((p) => (p._id || p.id) !== id)); // optimistic remove
-  
+
     try {
-      const token = localStorage.getItem("auth.token"); // adjust key if needed
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/plants/${id}`, {
-        method: "DELETE",
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-      });
-  
-      if (!res.ok) throw new Error("Delete failed");
+      await api.delete(`/plants/${id}`);
     } catch (e) {
       setPlants(prev); // revert if error
       alert(e.message || "Delete failed");

@@ -88,7 +88,7 @@ const api = {
   put: (path, body, opts) => request(path, { ...opts, method: "PUT", body }),
   patch: (path, body, opts) =>
     request(path, { ...opts, method: "PATCH", body }),
-  del: (path, opts) => request(path, { ...opts, method: "DELETE" }),
+  delete: (path, opts) => request(path, { ...opts, method: "DELETE" }),
 };
 
 export default api;

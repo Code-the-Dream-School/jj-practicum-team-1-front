@@ -27,7 +27,7 @@ You will have two folders inside one parent folder (one for front-end and one fo
 
 1. Clone this repository to the folder that was already created for both the front-end and back-end repos
 2. Run `npm install` to install dependencies
-3. Create `.env.local` file in your root directory  with backend URL (see below)
+3. Create `.env.local` file in your root directory with backend URL (see below)
 4. Pull the latest version of the `main` branch (when needed)
 5. Run `npm run dev` to start the development server
 6. Open http://localhost:5173 with your browser to see the data received the back-end server.
@@ -42,6 +42,7 @@ Create `.env.local` in the project root:
 #Backend base URL (required):
 VITE_API_URL=http://localhost:8000/api/v1
 ```
+
 A sample file is provided: `.env.local.example`
 
 #### Running the front-end server in Visual Studio Code
@@ -55,6 +56,7 @@ Note: In the below example, the group's front-end repository was named `bb-pract
 ![browser running](images/front-end-running-browser.png)
 
 **Project Structure**
+
 ```bash
 plantapp-frontend/
 ├── src/
@@ -91,7 +93,6 @@ plantapp-frontend/
 1. Make sure you're on the main branch: `git checkout main`
 2. Pull the latest changes: `git pull origin main`
 3. Create and switch to a new branch: `git checkout -b your-feature-branch-name`
-
    - Use descriptive branch names like: `add-login-form`, `fix-header-styling`, `update-user-profile`
 
 #### Making and Committing Changes
@@ -117,4 +118,3 @@ plantapp-frontend/
 4. Write a clear description of your changes
 5. Request review from your team members
 6. Wait for approval before merging
-

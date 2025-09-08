@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
+export default function PlantCard({
+  plant,
+  disableClick = false,
+  linkedFrom,
+  onDelete,
+}) {
   const navigate = useNavigate();
 
   const {
@@ -25,6 +30,14 @@ export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
     location,
     createdAt,
   } = plant;
+
+  const plantId = _id || id;
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // don’t navigate to details
+    e.preventDefault();
+    if (onDelete && plantId) onDelete(plantId);
+  };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -73,6 +86,26 @@ export default function PlantCard({ plant, disableClick = false, linkedFrom }) {
             e.target.src = "/plant-hero.jpg"; // Fallback if image fails to load
           }}
         />
+        {/* DELETE button: show only on collection grid (has _id) and not on details page */}
+        {onDelete && _id && !disableClick && (
+          <button
+            onClick={handleDeleteClick}
+            className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-red-600 text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-10"
+            aria-label="Delete plant"
+            title="Delete"
+          >
+            <svg
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+            >
+              <g data-name="70-Trash">
+                <path d="m29.89 6.55-1-2A1 1 0 0 0 28 4h-7V2a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2H4a1 1 0 0 0-.89.55l-1 2A1 1 0 0 0 3 8h2v22a2 2 0 0 0 .47 1.41A2 2 0 0 0 7 32h18a2 2 0 0 0 2-2V8h2a1 1 0 0 0 .89-1.45zM13 2h6v2h-6zm12 28H7V8h18z" />
+                <path d="M17 26V10a2 2 0 0 0-2 2l.06 14H15v2a2 2 0 0 0 2-2zM22 26V10a2 2 0 0 0-2 2l.06 14H20v2a2 2 0 0 0 2-2zM12 26V10a2 2 0 0 0-2 2l.06 14H10v2a2 2 0 0 0 2-2z" />
+              </g>
+            </svg>
+          </button>
+        )}
       </div>
 
       <div className="p-4">

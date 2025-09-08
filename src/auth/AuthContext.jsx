@@ -84,7 +84,9 @@ export function AuthProvider({ children }) {
     clearApiToken();
     setToken(null);
     setUser(null);
-    try { localStorage.removeItem("user"); } catch {}
+    try {
+      localStorage.removeItem("user");
+    } catch {}
     navigate("/");
   }, [navigate]);
 

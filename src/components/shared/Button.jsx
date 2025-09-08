@@ -11,8 +11,7 @@ export default function Button({ children, variant = "primary", ...props }) {
     variantClasses =
       "text-green-700 bg-transparent hover:bg-green-100 shadow-none";
   } else if (variant === "secondary") {
-    variantClasses =
-      "bg-gray-200 text-gray-800 hover:bg-gray-300";
+    variantClasses = "bg-gray-200 text-gray-800 hover:bg-gray-300";
   } else {
     // primary
     variantClasses = "text-white hover:opacity-90";
@@ -20,14 +19,17 @@ export default function Button({ children, variant = "primary", ...props }) {
 
   const classNames = `${baseClasses} ${variantClasses}`;
 
-  const customStyle = variant === "primary" ? {
-    backgroundColor: '#3A7D44',
-    fontFamily: 'Poppins, sans-serif',
-    fontWeight: '700',
-    fontSize: '14px',
-    color: 'white',
-    letterSpacing: '0'
-  } : {};
+  const customStyle =
+    variant === "primary"
+      ? {
+          backgroundColor: "#3A7D44",
+          fontFamily: "Poppins, sans-serif",
+          fontWeight: "700",
+          fontSize: "14px",
+          color: "white",
+          letterSpacing: "0",
+        }
+      : {};
 
   return (
     <button className={classNames} style={customStyle} {...props}>

@@ -71,6 +71,7 @@ export default function PlantCard({
   // Handle click to navigate to plant detail page
   const handleClick = () => {
     if (!disableClick) {
+      sessionStorage.setItem("retainPlantData", true);
       navigate(`/plants/${_id || id}`, {
         state: { linkedFrom: linkedFrom },
       });
@@ -79,7 +80,7 @@ export default function PlantCard({
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 ${
+      className={`plant-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 ${
         !disableClick ? "cursor-pointer hover:scale-105 transform" : ""
       }`}
       onClick={handleClick}
@@ -105,7 +106,7 @@ export default function PlantCard({
             e.target.src = "/plant-hero.jpg"; // Fallback if image fails to load
           }}
         />
-       
+
         {/* EDIT + DELETE buttons container */}
         {_id && !disableClick && (
           <div className="absolute top-2 right-2 flex gap-2">

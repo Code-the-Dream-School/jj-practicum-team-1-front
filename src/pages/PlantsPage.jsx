@@ -53,27 +53,23 @@ export default function PlantsPage() {
   };
 
   // EDIT save handler (optimistic + PATCH)
-  const handleEditSave = async (form) => {
+  const handleEditSave = async (formValues) => {
     const id = editing?._id || editing?.id;
     if (!id) return;
 
-    // build PATCH body only with non-empty values
-    const patch = {};
-    if (form.name.trim() !== "") patch.name = form.name.trim();
-    if (form.location.trim() !== "") patch.location = form.location.trim();
-    if (form.notes.trim() !== "") patch.notes = form.notes.trim();
-
-    // if nothing to update
-    if (Object.keys(patch).length === 0) {
-      alert("Please fill at least one field before saving.");
-      return;
-    }
+    // Always send all fields, even if empty
+    const patch = {
+      name: formValues.name ?? "",
+      location: formValues.location ?? "",
+      notes: formValues.notes ?? "",
+    };
+  
 
     const prev = plants;
 
     // optimistic update
     setPlants((list) =>
-      list.map((p) => ((p._id || p.id) === id ? { ...p, ...patch } : p))
+      list.map((p) => (p._id === id ? { ...p, ...patch } : p))
     );
 
     try {

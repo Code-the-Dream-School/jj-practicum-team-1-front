@@ -5,6 +5,7 @@ export default function PlantCard({
   disableClick = false,
   linkedFrom,
   onDelete,
+  onAdd,
 }) {
   const navigate = useNavigate();
 
@@ -32,11 +33,23 @@ export default function PlantCard({
   } = plant;
 
   const plantId = _id || id;
+  const plantName = name || common_name;
+  const displayImage =
+    imageURL ||
+    default_image?.medium_url ||
+    default_image?.original_url ||
+    "/plant-hero.jpg";
 
   const handleDeleteClick = (e) => {
     e.stopPropagation(); // don’t navigate to details
     e.preventDefault();
     if (onDelete && plantId) onDelete(plantId);
+  };
+
+  const handleAddClick = (e) => {
+    e.stopPropagation(); // don’t navigate to details
+    e.preventDefault();
+    if (onAdd && plantId) onAdd(displayImage, plantName);
   };
 
   const formatDate = (dateString) => {
@@ -48,13 +61,12 @@ export default function PlantCard({
     });
   };
 
-  const displayImage =
-    imageURL || default_image?.medium_url || "/plant-hero.jpg";
-
   // Handle click to navigate to plant detail page
   const handleClick = () => {
     if (!disableClick) {
-      navigate(`/plants/${_id || id}`, { state: { linkedFrom: linkedFrom } });
+      navigate(`/plants/${_id || id}`, {
+        state: { linkedFrom: linkedFrom },
+      });
     }
   };
 
@@ -90,7 +102,7 @@ export default function PlantCard({
         {onDelete && _id && !disableClick && (
           <button
             onClick={handleDeleteClick}
-            className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-red-600 text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-10"
+            className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-red-600 text-white shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 w-10 h-10"
             aria-label="Delete plant"
             title="Delete"
           >
@@ -103,6 +115,24 @@ export default function PlantCard({
                 <path d="m29.89 6.55-1-2A1 1 0 0 0 28 4h-7V2a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v2H4a1 1 0 0 0-.89.55l-1 2A1 1 0 0 0 3 8h2v22a2 2 0 0 0 .47 1.41A2 2 0 0 0 7 32h18a2 2 0 0 0 2-2V8h2a1 1 0 0 0 .89-1.45zM13 2h6v2h-6zm12 28H7V8h18z" />
                 <path d="M17 26V10a2 2 0 0 0-2 2l.06 14H15v2a2 2 0 0 0 2-2zM22 26V10a2 2 0 0 0-2 2l.06 14H20v2a2 2 0 0 0 2-2zM12 26V10a2 2 0 0 0-2 2l.06 14H10v2a2 2 0 0 0 2-2z" />
               </g>
+            </svg>
+          </button>
+        )}
+
+        {/* Add button: show only on photo identify grid and explore grid (has id) */}
+        {onAdd && id && !disableClick && (
+          <button
+            onClick={handleAddClick}
+            className="absolute top-2 right-2 px-2 py-1 text-xs rounded bg-green-600 text-white shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 w-10 h-10"
+            aria-label="Add plant"
+            title="Add"
+          >
+            <svg
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 128 128"
+            >
+              <path d="M128 63.954c0 2.006-.797 3.821-2.136 5.127-1.308 1.337-3.125 2.133-5.166 2.133 H71.302 v49.356 c0 4.012-3.284 7.292-7.302 7.292-2.009 0-3.827-.828-5.166-2.134-1.308-1.337-2.136-3.152-2.136-5.159 V71.214 H7.302 c-4.05 0-7.302-3.248-7.302-7.26 0-2.006.797-3.853 2.136-5.159a7.279 7.279 0 0 1 5.166-2.134 h49.395 V7.306 c0-4.012 3.284-7.26 7.302-7.26 2.009 0 3.827.828 5.166 2.133a7.238 7.238 0 0 1 2.136 5.127 v49.356 h49.395 A7.276 7.276 0 0 1 128 63.954z" />
             </svg>
           </button>
         )}

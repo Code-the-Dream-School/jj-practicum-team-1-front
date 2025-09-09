@@ -4,6 +4,46 @@ import api from "../lib/apiClient";
 import PlantCard from "../components/PlantCard";
 import Button from "../components/shared/Button";
 import { useAuth } from "../auth/AuthContext";
+import PlantGrid from "../components/PlantGrid";
+
+// // **`` Dummy data instead of constantly calling the api
+// const res = {
+//   data: [
+//     {
+//       id: 2498,
+//       common_name: "Venus fly trap",
+//       scientific_name: ["Dionaea muscipula"],
+//       default_image: {
+//         license: 45,
+//         license_name: "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)",
+//         license_url: "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
+//         original_url:
+//           "https://perenual.com/storage/species_image/2498_dionaea_muscipula/og/2560px-Dionaea_muscipula2C_exhibition_in_Botanical_garden_Brno.jpg",
+//         regular_url:
+//           "https://perenual.com/storage/species_image/2498_dionaea_muscipula/regular/2560px-Dionaea_muscipula2C_exhibition_in_Botanical_garden_Brno.jpg",
+//         medium_url:
+//           "https://perenual.com/storage/species_image/2498_dionaea_muscipula/medium/2560px-Dionaea_muscipula2C_exhibition_in_Botanical_garden_Brno.jpg",
+//         small_url:
+//           "https://perenual.com/storage/species_image/2498_dionaea_muscipula/small/2560px-Dionaea_muscipula2C_exhibition_in_Botanical_garden_Brno.jpg",
+//         thumbnail:
+//           "https://perenual.com/storage/species_image/2498_dionaea_muscipula/thumbnail/2560px-Dionaea_muscipula2C_exhibition_in_Botanical_garden_Brno.jpg",
+//       },
+//     },
+//     {
+//       id: 2499,
+//       common_name: "Venus fly trap",
+//       scientific_name: ["Dionaea muscipula 'Akai Ryu'"],
+//       default_image: {
+//         license: 6,
+//         license_name: "Attribution-NoDerivs License",
+//         license_url: "https://creativecommons.org/licenses/by-nd/2.0/",
+//         original_url:
+//           "https://perenual.com/storage/species_image/2499_dionaea_muscipula_akai_ryu/og/5638466264_af7c4be36f_b.jpg",
+//       },
+//     },
+//   ],
+//   total: 2,
+// };
 
 export default function PlantIdentifierPage() {
   // Mode selection
@@ -21,6 +61,8 @@ export default function PlantIdentifierPage() {
   const [plantLocation, setPlantLocation] = useState("");
   const [manualImage, setManualImage] = useState(null);
   const [manualPreviewUrl, setManualPreviewUrl] = useState(null);
+
+  const [plants, setPlants] = useState([]);
 
   // Common states
   const [error, setError] = useState(null);
@@ -112,9 +154,11 @@ export default function PlantIdentifierPage() {
         formData.append("images", selectedFile);
       }
 
+      // **`` This is for when you're actually calling the api
       const res = await api.post("/identifyPlants", formData);
 
-      console.log("res:", res);
+      setPlants(res.data);
+      setMode("results");
       resetForm();
       // navigate("/plants");
     } catch (err) {
@@ -156,8 +200,10 @@ export default function PlantIdentifierPage() {
       formData.append("notes", plantNotes);
       formData.append("location", plantLocation);
 
-      if (manualImage) {
+      if (manualImage instanceof File) {
         formData.append("file", manualImage);
+      } else if (typeof manualImage === "string") {
+        formData.append("imageURL", manualImage);
       }
 
       await api.post("/plants", formData);
@@ -170,6 +216,13 @@ export default function PlantIdentifierPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleAdd = async (imageURL, name) => {
+    setMode("manual");
+    setPlantName(name);
+    setManualImage(imageURL);
+    setManualPreviewUrl(imageURL);
   };
 
   return (
@@ -236,6 +289,15 @@ export default function PlantIdentifierPage() {
             </div>
           </Button>
         </div>
+
+        {/* **`` Identifier results displayed here ``**  */}
+        {mode === "results" && (
+          <PlantGrid
+            plants={plants}
+            linkedFrom="explorer page"
+            onAdd={handleAdd}
+          />
+        )}
 
         {/* Identify Mode - Upload Section */}
         {mode === "identify" && (

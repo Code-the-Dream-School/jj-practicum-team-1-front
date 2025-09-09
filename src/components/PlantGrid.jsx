@@ -1,6 +1,6 @@
 import PlantCard from "./PlantCard";
 
-export default function PlantGrid({ plants, linkedFrom, onDelete }) {
+export default function PlantGrid({ plants, linkedFrom, onDelete, onEdit }) {
   // Grid display
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -10,6 +10,7 @@ export default function PlantGrid({ plants, linkedFrom, onDelete }) {
           plant={plant}
           linkedFrom={linkedFrom}
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       ))}
     </div>

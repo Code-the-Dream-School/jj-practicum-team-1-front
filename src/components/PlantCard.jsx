@@ -71,7 +71,6 @@ export default function PlantCard({
   // Handle click to navigate to plant detail page
   const handleClick = () => {
     if (!disableClick) {
-      sessionStorage.setItem("retainPlantData", true);
       navigate(`/plants/${_id || id}`, {
         state: { linkedFrom: linkedFrom },
       });

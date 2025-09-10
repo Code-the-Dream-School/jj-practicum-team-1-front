@@ -6,32 +6,30 @@ import Button from "../components/shared/Button";
 import { useAuth } from "../auth/AuthContext";
 import PlantGrid from "../components/PlantGrid";
 
-const res = {
-  data: [
-    {
-      id: 8551,
-      common_name: "golden barrel cactus",
-      scientific_name: ["Echinocactus grusonii"],
-      default_image: {
-        license: 451,
-        license_name: "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
-        license_url: "https://creativecommons.org/publicdomain/zero/1.0/",
-        original_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        regular_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        medium_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        small_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        thumbnail: "https://perenual.com/storage/image/upgrade_access.jpg",
-      },
-    },
-  ],
-  total: 1,
-};
+// const res = {
+//   data: [
+//     {
+//       id: 8551,
+//       common_name: "golden barrel cactus",
+//       scientific_name: ["Echinocactus grusonii"],
+//       default_image: {
+//         license: 451,
+//         license_name: "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
+//         license_url: "https://creativecommons.org/publicdomain/zero/1.0/",
+//         original_url: "https://perenual.com/storage/image/upgrade_access.jpg",
+//         regular_url: "https://perenual.com/storage/image/upgrade_access.jpg",
+//         medium_url: "https://perenual.com/storage/image/upgrade_access.jpg",
+//         small_url: "https://perenual.com/storage/image/upgrade_access.jpg",
+//         thumbnail: "https://perenual.com/storage/image/upgrade_access.jpg",
+//       },
+//     },
+//   ],
+//   total: 1,
+// };
 
 export default function PlantIdentifierPage() {
   // Mode selection
-  const [mode, setMode] = useState(
-    sessionStorage.getItem("mode") || "identify"
-  ); // 'identify' or 'manual'
+  const [mode, setMode] = useState("identify"); // 'identify' or 'manual'
 
   // Image identification states
   const [selectedFile, setSelectedFile] = useState(null);
@@ -46,9 +44,7 @@ export default function PlantIdentifierPage() {
   const [manualImage, setManualImage] = useState(null);
   const [manualPreviewUrl, setManualPreviewUrl] = useState(null);
 
-  const [plants, setPlants] = useState(
-    JSON.parse(sessionStorage.getItem("plants")) || []
-  );
+  const [plants, setPlants] = useState([]);
 
   // Common states
   const [error, setError] = useState(null);
@@ -113,23 +109,7 @@ export default function PlantIdentifierPage() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      const retain = sessionStorage.getItem("retainPlantData");
-
-      if (retain) {
-        sessionStorage.removeItem("retainPlantData");
-        return;
-      }
-      // sessionStorage.removeItem("plants");
-      // sessionStorage.removeItem("mode");
-    };
-  }, []);
-
   const switchMode = (newMode) => {
-    // sessionStorage.removeItem("retainPlantData");
-    // sessionStorage.removeItem("plants");
-    // sessionStorage.removeItem("mode");
     setMode(newMode);
     setError(null);
     // Reset identification mode states
@@ -158,13 +138,9 @@ export default function PlantIdentifierPage() {
         formData.append("images", selectedFile);
       }
 
-      // const res = await api.post("/identifyPlants", formData);
+      const res = await api.post("/identifyPlants", formData);
 
       setPlants(res.data);
-      sessionStorage.setItem("plants", JSON.stringify(res.data));
-      // sessionStorage.removeItem("plants");
-      sessionStorage.setItem("mode", "results");
-
       setMode("results");
       resetForm();
       // navigate("/plants");

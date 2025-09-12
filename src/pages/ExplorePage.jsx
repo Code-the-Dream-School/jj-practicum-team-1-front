@@ -2,7 +2,7 @@ import { useState } from "react";
 import api from "../lib/apiClient";
 import PlantGrid from "../components/PlantGrid";
 import Button from "../components/shared/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // **`` Temporary data while not actually calling the api
 const res = {
@@ -52,7 +52,15 @@ const res = {
 };
 
 export default function ExplorerPage() {
-  const [plants, setPlants] = useState([]);
+  const location = useLocation();
+  const { state } = location;
+  console.log("state.linkedFrom:", state?.linkedFrom);
+
+  const [plants, setPlants] = useState(
+    (state?.linkedFrom === "details page" &&
+      JSON.parse(sessionStorage.getItem("plants"))) ||
+      []
+  );
   const [searchName, setSearchName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -71,6 +79,7 @@ export default function ExplorerPage() {
     try {
       // **`` This is the actual api call when you want to reactivate it
       // const res = await api.get(`/identifyPlants?name=${searchName}`);
+      sessionStorage.setItem("plants", JSON.stringify(res.data));
       setPlants(res.data || []);
       setSearchName("");
     } catch (error) {

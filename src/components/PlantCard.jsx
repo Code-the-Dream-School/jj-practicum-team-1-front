@@ -10,6 +10,7 @@ export default function PlantCard({
 }) {
   const navigate = useNavigate();
 
+  console.log("linkedFrom:", linkedFrom);
   const {
     _id,
     id,

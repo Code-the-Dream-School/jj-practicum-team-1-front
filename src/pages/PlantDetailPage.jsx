@@ -66,6 +66,7 @@ export default function PlantDetailPage() {
 
   const location = useLocation();
   const { state } = location;
+  console.log("state:", state);
 
   // Fetch individual plant from the API
   useEffect(() => {
@@ -115,6 +116,21 @@ export default function PlantDetailPage() {
     }
   }, [id]);
 
+  const navRoute = () => {
+    let route;
+
+    if (state.linkedFrom === "explorer page") {
+      route = "/explorer";
+    }
+
+    if (state.linkedFrom === "plants page") {
+      route = `/plants/`;
+    }
+
+    console.log("route:", route);
+    return route;
+  };
+
   // Loading state
   if (loading) {
     return (
@@ -151,7 +167,13 @@ export default function PlantDetailPage() {
               <p className="text-xl font-semibold">Plant not found</p>
               <p className="text-sm text-gray-600 mt-2">{error}</p>
             </div>
-            <Button onClick={() => navigate(-1)}>Go Back</Button>
+            <Button
+              onClick={() =>
+                navigate(navRoute(), { state: { linkedFrom: "details page" } })
+              }
+            >
+              Go Back
+            </Button>
           </div>
         </div>
       </div>
@@ -167,7 +189,12 @@ export default function PlantDetailPage() {
             <p className="text-xl font-semibold text-gray-600">
               Plant not found
             </p>
-            <Button onClick={() => navigate(-1)} className="mt-4">
+            <Button
+              onClick={() =>
+                navigate(navRoute(), { state: { linkedFrom: "details page" } })
+              }
+              className="mt-4"
+            >
               Go Back
             </Button>
           </div>
@@ -183,7 +210,9 @@ export default function PlantDetailPage() {
         <div className="mb-6">
           <Button
             variant="outline"
-            onClick={() => navigate(-1)}
+            onClick={() =>
+              navigate(navRoute(), { state: { linkedFrom: "details page" } })
+            }
             className="flex items-center"
           >
             <svg

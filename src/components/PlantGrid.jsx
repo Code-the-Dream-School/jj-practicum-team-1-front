@@ -7,6 +7,7 @@ export default function PlantGrid({
   onEdit,
   onAdd,
 }) {
+  console.log("linkedFrom:", linkedFrom);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {plants.map((plant) => (

@@ -11,8 +11,6 @@ export default function PlantsPage() {
   const [error, setError] = useState(null);
   const [editing, setEditing] = useState(null);
 
-  //todo **`` Got the api call to live in session storage on explorer page. when you navigate from the plants detail page it sends state saying linkedFrom: "details page". The explorer page looks for that and repopulates the cards if it sees that. If it doesn't it populates an empty array. Now I need the "add plant by photo identifier to work in the same manner"
-
   const navigate = useNavigate();
 
   useEffect(() => {

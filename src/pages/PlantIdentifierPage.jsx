@@ -32,7 +32,11 @@ export default function PlantIdentifierPage() {
   const { state } = location;
 
   // state?.mode comes from the Explorer Page
-  const [mode, setMode] = useState(state?.mode || "identify"); // 'identify' or 'manual'
+  const [mode, setMode] = useState(
+    (state?.linkedFrom === "details page" && "results") ||
+      state?.mode ||
+      "identify"
+  ); // 'identify' or 'manual'
 
   // Image identification states
   const [selectedFile, setSelectedFile] = useState(null);
@@ -52,7 +56,11 @@ export default function PlantIdentifierPage() {
     state?.imageURL || null
   );
 
-  const [plants, setPlants] = useState([]);
+  const [plants, setPlants] = useState(
+    (state?.linkedFrom === "details page" &&
+      JSON.parse(sessionStorage.getItem("plants"))) ||
+      []
+  );
 
   // Common states
   const [error, setError] = useState(null);
@@ -146,6 +154,7 @@ export default function PlantIdentifierPage() {
 
       // const res = await api.post("/identifyPlants", formData);
 
+      sessionStorage.setItem("plants", JSON.stringify(res.data));
       setPlants(res.data);
       setMode("results");
       resetForm();
@@ -283,7 +292,7 @@ export default function PlantIdentifierPage() {
         {mode === "results" && (
           <PlantGrid
             plants={plants}
-            linkedFrom="explorer page"
+            linkedFrom="identify page"
             onAdd={handleAdd}
           />
         )}

@@ -76,7 +76,10 @@ export default function PlantDetailPage() {
       url = `/plants/${id}`;
     }
 
-    if (state.linkedFrom === "explorer page") {
+    if (
+      state.linkedFrom === "explorer page" ||
+      state.linkedFrom === "identify page"
+    ) {
       url = `/identifyPlants/${id}`;
     }
 
@@ -98,7 +101,10 @@ export default function PlantDetailPage() {
 
           setPlant(response.plant);
         }
-        if (state.linkedFrom === "explorer page") {
+        if (
+          state.linkedFrom === "explorer page" ||
+          state.linkedFrom === "identify page"
+        ) {
           url = `/identifyPlants/${id}`;
           setPlant(res.data);
         }
@@ -119,12 +125,17 @@ export default function PlantDetailPage() {
   const navRoute = () => {
     let route;
 
+    console.log("state.linkedFrom:", state.linkedFrom);
     if (state.linkedFrom === "explorer page") {
       route = "/explorer";
     }
 
     if (state.linkedFrom === "plants page") {
-      route = `/plants/`;
+      route = `/plants`;
+    }
+
+    if (state.linkedFrom === "identify page") {
+      route = `/identify`;
     }
 
     console.log("route:", route);
@@ -234,7 +245,11 @@ export default function PlantDetailPage() {
 
         {/* Plant Card Display */}
         <div className="max-w-md mx-auto">
-          <PlantCard plant={plant} disableClick={true} />
+          <PlantCard
+            plant={plant}
+            disableClick={true}
+            linkedFrom={state?.linkedFrom}
+          />
         </div>
       </div>
     </div>

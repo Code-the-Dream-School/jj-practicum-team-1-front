@@ -25,10 +25,10 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/identify" element={<PlantIdentifierPage />} />
 
         {/* Protected */}
         <Route element={<PrivateRoute />}>
+          <Route path="/identify" element={<PlantIdentifierPage />} />
           <Route path="/plants" element={<PlantsPage />} />
           <Route path="/plants/:id" element={<PlantDetailPage />} />
           <Route path="/explorer" element={<ExplorerPage />} />

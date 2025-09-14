@@ -7,17 +7,17 @@ export default function HomePage() {
     <>
       {/* <Navbar /> */}
 
-      <main className="overflow-x-hidden">
+      <main className="overflow-x-hidden h-screen">
         {/* Hero Section */}
         <section className="relative w-full h-[420px] sm:h-[520px] lg:h-[600px] min-h-[350px] max-h-[90vh]">
           <img
             src="/plant-hero.jpg"
             alt="Plant sprouting"
-            className="w-full h-full object-cover"
+            className="w-full h-screen object-cover"
           />
 
           {/* Overlay */}
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/50 h-screen" />
 
           {/* Hero content: mobile center → sm left → lg right */}
           <div
@@ -45,7 +45,7 @@ export default function HomePage() {
         </section>
 
         {/* How It Works Section */}
-        <section className="mt-12 sm:mt-16 lg:mt-24 w-full">
+        {/* <section className="mt-12 sm:mt-16 lg:mt-24 w-full">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
               How It Works
@@ -55,7 +55,7 @@ export default function HomePage() {
               to your profile.
             </p>
           </div>
-        </section>
+        </section> */}
       </main>
     </>
   );

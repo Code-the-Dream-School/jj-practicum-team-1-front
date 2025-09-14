@@ -1,13 +1,21 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../lib/apiClient";
 import PlantCard from "../components/PlantCard";
 import Button from "../components/shared/Button";
 import { useAuth } from "../auth/AuthContext";
+import PlantGrid from "../components/PlantGrid";
 
 export default function PlantIdentifierPage() {
-  // Mode selection
-  const [mode, setMode] = useState("identify"); // 'identify' or 'manual'
+  const location = useLocation();
+  const { state } = location;
+
+  // state?.mode comes from the Explorer Page
+  const [mode, setMode] = useState(
+    (state?.linkedFrom === "details page" && "results") ||
+      state?.mode ||
+      "identify"
+  ); // 'identify' or 'manual'
 
   // Image identification states
   const [selectedFile, setSelectedFile] = useState(null);
@@ -16,11 +24,22 @@ export default function PlantIdentifierPage() {
   const [selectedPlant, setSelectedPlant] = useState(null);
 
   // Manual entry states
-  const [plantName, setPlantName] = useState("");
+
+  // state?.name comes from the Explorer Page
+  const [plantName, setPlantName] = useState(state?.name || "");
   const [plantNotes, setPlantNotes] = useState("");
   const [plantLocation, setPlantLocation] = useState("");
-  const [manualImage, setManualImage] = useState(null);
-  const [manualPreviewUrl, setManualPreviewUrl] = useState(null);
+  // state?.imageURL comes from the Explorer Page
+  const [manualImage, setManualImage] = useState(state?.imageURL || null);
+  const [manualPreviewUrl, setManualPreviewUrl] = useState(
+    state?.imageURL || null
+  );
+
+  const [plants, setPlants] = useState(
+    (state?.linkedFrom === "details page" &&
+      JSON.parse(sessionStorage.getItem("plants"))) ||
+      []
+  );
 
   // Common states
   const [error, setError] = useState(null);
@@ -114,9 +133,10 @@ export default function PlantIdentifierPage() {
 
       const res = await api.post("/identifyPlants", formData);
 
-      console.log("res:", res);
+      sessionStorage.setItem("plants", JSON.stringify(res.data));
+      setPlants(res.data);
+      setMode("results");
       resetForm();
-      // navigate("/plants");
     } catch (err) {
       console.error("Identify plant error:", err);
       setError(err.message || "Failed to identify plant. Please try again.");
@@ -138,6 +158,7 @@ export default function PlantIdentifierPage() {
   const handleSaveManualPlant = async () => {
     if (!plantName.trim()) {
       setError("Please enter a plant name.");
+
       return;
     }
 
@@ -156,8 +177,10 @@ export default function PlantIdentifierPage() {
       formData.append("notes", plantNotes);
       formData.append("location", plantLocation);
 
-      if (manualImage) {
+      if (manualImage instanceof File) {
         formData.append("file", manualImage);
+      } else if (typeof manualImage === "string") {
+        formData.append("imageURL", manualImage);
       }
 
       await api.post("/plants", formData);
@@ -170,6 +193,13 @@ export default function PlantIdentifierPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleAdd = async (imageURL, name) => {
+    setMode("manual");
+    setPlantName(name);
+    setManualImage(imageURL);
+    setManualPreviewUrl(imageURL);
   };
 
   return (
@@ -236,6 +266,15 @@ export default function PlantIdentifierPage() {
             </div>
           </Button>
         </div>
+
+        {/* **`` Identifier results displayed here ``**  */}
+        {mode === "results" && (
+          <PlantGrid
+            plants={plants}
+            linkedFrom="identify page"
+            onAdd={handleAdd}
+          />
+        )}
 
         {/* Identify Mode - Upload Section */}
         {mode === "identify" && (
@@ -487,10 +526,7 @@ export default function PlantIdentifierPage() {
             </div>
 
             <div className="flex justify-end mt-6">
-              <Button
-                onClick={handleSaveManualPlant}
-                disabled={isLoading || !plantName.trim()}
-              >
+              <Button onClick={handleSaveManualPlant} disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <svg

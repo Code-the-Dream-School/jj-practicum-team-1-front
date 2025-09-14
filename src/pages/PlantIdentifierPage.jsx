@@ -6,27 +6,6 @@ import Button from "../components/shared/Button";
 import { useAuth } from "../auth/AuthContext";
 import PlantGrid from "../components/PlantGrid";
 
-const res = {
-  data: [
-    {
-      id: 8551,
-      common_name: "golden barrel cactus",
-      scientific_name: ["Echinocactus grusonii"],
-      default_image: {
-        license: 451,
-        license_name: "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
-        license_url: "https://creativecommons.org/publicdomain/zero/1.0/",
-        original_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        regular_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        medium_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        small_url: "https://perenual.com/storage/image/upgrade_access.jpg",
-        thumbnail: "https://perenual.com/storage/image/upgrade_access.jpg",
-      },
-    },
-  ],
-  total: 1,
-};
-
 export default function PlantIdentifierPage() {
   const location = useLocation();
   const { state } = location;
@@ -152,13 +131,12 @@ export default function PlantIdentifierPage() {
         formData.append("images", selectedFile);
       }
 
-      // const res = await api.post("/identifyPlants", formData);
+      const res = await api.post("/identifyPlants", formData);
 
       sessionStorage.setItem("plants", JSON.stringify(res.data));
       setPlants(res.data);
       setMode("results");
       resetForm();
-      // navigate("/plants");
     } catch (err) {
       console.error("Identify plant error:", err);
       setError(err.message || "Failed to identify plant. Please try again.");
@@ -180,6 +158,7 @@ export default function PlantIdentifierPage() {
   const handleSaveManualPlant = async () => {
     if (!plantName.trim()) {
       setError("Please enter a plant name.");
+
       return;
     }
 
@@ -547,10 +526,7 @@ export default function PlantIdentifierPage() {
             </div>
 
             <div className="flex justify-end mt-6">
-              <Button
-                onClick={handleSaveManualPlant}
-                disabled={isLoading || !plantName.trim()}
-              >
+              <Button onClick={handleSaveManualPlant} disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <svg

@@ -4,59 +4,6 @@ import api from "../lib/apiClient";
 import Button from "../components/shared/Button";
 import PlantCard from "../components/PlantCard";
 
-// **`` Temporary data while not actually calling the api
-const res = {
-  data: {
-    id: 2230,
-    common_name: "crocus",
-    scientific_name: ["Crocus luteus 'Golden Yellow'"],
-    origin: [
-      "Turkey",
-      "Greece",
-      "Bulgaria",
-      "Albania",
-      "Macedonia",
-      "Serbia",
-      "Montenegro",
-      "Bosnia and Herzegovina",
-      "Croatia",
-    ],
-    hardiness_zones: {
-      min: "3",
-      max: "8",
-    },
-    hardiness_location: {
-      full_url:
-        "https://perenual.com/api/hardiness-map?species_id=2230&size=og&key=sk-7wRB68a4e4efc60fe11920",
-      full_iframe:
-        "<iframe frameborder=0 scrolling=yes seamless=seamless width=1000 height=550 style='margin:auto;' src='https://perenual.com/api/hardiness-map?species_id=2230&size=og&key=sk-7wRB68a4e4efc60fe11920'></iframe>",
-    },
-    description:
-      "Crocus luteus 'Golden Yellow' is truly an amazing flower. Its vibrant sunny yellow petals are a sight to behold! They stand atop thin green stems and offer a cheerful splash of color to any garden setting. As a spring-blooming perennial, it's hardy in most climates, and its spectacular display will reappear year after year. The lovely, aromatic blooms also attract bees and other pollinators, making it an excellent choice for butterfly gardens. Not a fan of mowing the lawn? Planting Crocus luteus 'Golden Yellow' in large clumps will provide a beautiful, low-maintenance, natural alternative and can even resist light foot traffic!",
-    default_image: {
-      license: 45,
-      license_name: "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)",
-      license_url: "https://creativecommons.org/licenses/by-sa/3.0/deed.en",
-      original_url:
-        "https://perenual.com/storage/species_image/2230_crocus_luteus_golden_yellow/og/Crocus_ancyrensis002.jpg",
-      regular_url:
-        "https://perenual.com/storage/species_image/2230_crocus_luteus_golden_yellow/regular/Crocus_ancyrensis002.jpg",
-      medium_url:
-        "https://perenual.com/storage/species_image/2230_crocus_luteus_golden_yellow/medium/Crocus_ancyrensis002.jpg",
-      small_url:
-        "https://perenual.com/storage/species_image/2230_crocus_luteus_golden_yellow/small/Crocus_ancyrensis002.jpg",
-      thumbnail:
-        "https://perenual.com/storage/species_image/2230_crocus_luteus_golden_yellow/thumbnail/Crocus_ancyrensis002.jpg",
-    },
-    cycle: "Perennial",
-    sunlight: ["Full sun", "part shade"],
-    growth_rate: "Low",
-    care_level: "Moderate",
-    watering: "Average",
-    maintenance: "Low",
-  },
-};
-
 export default function PlantDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -88,27 +35,8 @@ export default function PlantDetailPage() {
         setLoading(true);
         setError(null);
 
-        // **`` This is the actual api call when you want to reactivate it
-        // const response = await api.get(url);
-        // setPlant(response.plant || response.data);
-
-        // **`` When you reactivate the api call, remove the code between the block below
-        //***************************************** */
-        let response;
-        if (state.linkedFrom === "plants page") {
-          url = `/plants/${id}`;
-          response = await api.get(url);
-
-          setPlant(response.plant);
-        }
-        if (
-          state.linkedFrom === "explorer page" ||
-          state.linkedFrom === "identify page"
-        ) {
-          url = `/identifyPlants/${id}`;
-          setPlant(res.data);
-        }
-        //***************************************** */
+        const response = await api.get(url);
+        setPlant(response.plant || response.data);
       } catch (err) {
         console.error("Error fetching plant:", err);
         setError(err.message || "Failed to fetch plant details");

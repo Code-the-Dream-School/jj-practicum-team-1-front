@@ -3,6 +3,7 @@ import api from "../lib/apiClient";
 import PlantGrid from "../components/PlantGrid";
 import Button from "../components/shared/Button";
 import { useLocation, useNavigate } from "react-router-dom";
+import { fillerPlantData } from "../data/fillerPlantData";
 
 export default function ExplorerPage() {
   const location = useLocation();
@@ -11,13 +12,18 @@ export default function ExplorerPage() {
   const [plants, setPlants] = useState(
     (state?.linkedFrom === "details page" &&
       JSON.parse(sessionStorage.getItem("plants"))) ||
-      []
+      handleFillerPlantData()
   );
   const [searchName, setSearchName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
+
+  function handleFillerPlantData() {
+    sessionStorage.setItem("plants", JSON.stringify(fillerPlantData));
+    return fillerPlantData;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -31,7 +31,7 @@ export default function HomePage() {
             "
           >
             <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-2">
-              Plant observation
+              Plantasy
             </h1>
             <p className="text-sm sm:text-base lg:text-xl mb-4 max-w-md">
               An app for recording and identifying plants

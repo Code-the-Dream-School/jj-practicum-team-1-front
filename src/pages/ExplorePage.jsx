@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function ExplorerPage() {
   const location = useLocation();
   const { state } = location;
-  console.log("state.linkedFrom:", state?.linkedFrom);
 
   const [plants, setPlants] = useState(
     (state?.linkedFrom === "details page" &&
@@ -42,7 +41,6 @@ export default function ExplorerPage() {
     setIsLoading(false);
   };
   const handleAdd = (imageURL, name) => {
-    console.log("Added");
     navigate("/identify", {
       state: { imageURL, name, mode: "manual" },
     });

@@ -4,12 +4,15 @@ import api from "../lib/apiClient";
 import Button from "../components/shared/Button";
 import { useNavigate } from "react-router-dom";
 import EditPlantModal from "../components/EditPlantModal";
+import SortButton from "../components/SortButton";
 
 export default function PlantsPage() {
   const [plants, setPlants] = useState([]);
+  console.log("plants:", plants);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editing, setEditing] = useState(null);
+  const [isAscending, setIsAscending] = useState(true);
 
   const navigate = useNavigate();
 
@@ -80,35 +83,31 @@ export default function PlantsPage() {
     }
   };
 
+  useEffect(() => {
+    isAscending ? setAscendingOrder() : setDescendingOrder();
+  }, [isAscending]);
+
+  const setAscendingOrder = () =>
+    setPlants((plants) =>
+      [...plants].sort((a, b) => {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      })
+    );
+  const setDescendingOrder = () =>
+    setPlants((plants) =>
+      [...plants].sort((a, b) => {
+        return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+      })
+    );
+
+  const handleSort = () => {
+    setIsAscending((value) => !value);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (error) {
-    return (
-      <div className="text-center py-12">
-        <div className="text-red-600 mb-4">
-          <svg
-            className="w-12 h-12 mx-auto mb-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <p className="text-lg font-semibold">Error loading plants</p>
-          <p className="text-sm text-gray-600 mt-2">{error}</p>
-        </div>
       </div>
     );
   }
@@ -127,6 +126,8 @@ export default function PlantsPage() {
                 Discover and manage your plant observations
               </p>
             </div>
+
+            <SortButton handleSort={handleSort} isAscending={isAscending} />
 
             {/* Add Plant Button */}
             <Button onClick={() => navigate("/identify")}>
@@ -162,6 +163,29 @@ export default function PlantsPage() {
               </div>
             </div>
           </>
+        )}
+
+        {/* // Error state */}
+        {error && (
+          <div className="text-center py-12">
+            <div className="text-red-600 mb-4">
+              <svg
+                className="w-12 h-12 mx-auto mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p className="text-lg font-semibold">Error loading plants</p>
+              <p className="text-sm text-gray-600 mt-2">{error}</p>
+            </div>
+          </div>
         )}
 
         {/* Plant Grid */}

@@ -1,5 +1,5 @@
 import PlantGrid from "../components/PlantGrid";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import api from "../lib/apiClient";
 import Button from "../components/shared/Button";
 import { useNavigate } from "react-router-dom";
@@ -82,18 +82,20 @@ export default function PlantsPage() {
     }
   };
 
-  const setAscendingOrder = () =>
+  const setAscendingOrder = useCallback(() =>
     setPlants((plants) =>
       [...plants].sort((a, b) => {
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       })
-    );
-  const setDescendingOrder = () =>
+    )
+  );
+  const setDescendingOrder = useCallback(() =>
     setPlants((plants) =>
       [...plants].sort((a, b) => {
         return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
       })
-    );
+    )
+  );
 
   useEffect(() => {
     isAscending ? setAscendingOrder() : setDescendingOrder();

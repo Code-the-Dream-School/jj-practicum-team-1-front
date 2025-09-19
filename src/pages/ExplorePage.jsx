@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import api from "../lib/apiClient";
 import PlantGrid from "../components/PlantGrid";
 import Button from "../components/shared/Button";
@@ -55,22 +55,25 @@ export default function ExplorerPage() {
     });
   };
 
-  const setAscendingOrder = () =>
-    setPlants((plants) =>
-      [...plants].sort((a, b) => {
-        return a.common_name
-          .toLowerCase()
-          .localeCompare(b.common_name.toLowerCase());
-      })
-    );
-  const setDescendingOrder = () =>
-    setPlants((plants) =>
-      [...plants].sort((a, b) => {
-        return b.common_name
-          .toLowerCase()
-          .localeCompare(a.common_name.toLowerCase());
-      })
-    );
+  const setAscendingOrder = useCallback(
+    () =>
+      setPlants((plants) =>
+        [...plants].sort((a, b) =>
+          a.common_name.toLowerCase().localeCompare(b.common_name.toLowerCase())
+        )
+      ),
+    []
+  );
+
+  const setDescendingOrder = useCallback(
+    () =>
+      setPlants((plants) =>
+        [...plants].sort((a, b) =>
+          b.common_name.toLowerCase().localeCompare(a.common_name.toLowerCase())
+        )
+      ),
+    []
+  );
 
   useEffect(() => {
     isAscending ? setAscendingOrder() : setDescendingOrder();

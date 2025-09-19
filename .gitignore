@@ -2,4 +2,3 @@
 .DS_STORE
 .gitignore
 .env
-.env.*

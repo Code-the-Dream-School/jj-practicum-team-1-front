@@ -25,7 +25,6 @@ You will have two folders inside one parent folder (one for front-end and one fo
 
 - Search Observations (filter by date, name, or location)
 
-
 ### Setting up local development environment
 
 1. Clone this repository to the folder that was already created for both the front-end and back-end repos
@@ -39,14 +38,14 @@ Now you have your front-end and back-end running locally!
 
 **Environment Variables**
 
-Create `.env.local` in the project root:
+Create `.env` in the project root:
 
 ```bash
 # Backend base URL (required):
 VITE_API_URL=http://localhost:8000/api/v1
 ```
 
-A sample file is provided: `.env.local.example`
+A sample file is provided: `.env.example`
 
 #### Running the front-end server in Visual Studio Code
 
@@ -73,7 +72,7 @@ plantasy-frontend/
 │   ├── styles/           # Tailwind + global styles
 │   └── App.jsx / main.jsx
 ├── public/
-├── .env.local.example
+├── .env.example
 ├── package.json
 └── README.md
 ```

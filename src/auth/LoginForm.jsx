@@ -17,11 +17,7 @@ export default function LoginForm() {
     setError("");
     setLoading(true);
 
-    console.log("➡️ Trying to log in with:", email); // debug
-
     const success = await login({ email, password });
-
-    console.log("✅ Login result:", success); // debug
 
     if (success) {
       navigate("/plants");

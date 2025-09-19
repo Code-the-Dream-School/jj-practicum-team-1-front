@@ -38,18 +38,11 @@ export default function SignupForm() {
 
     setLoading(true);
 
-    console.log("➡️ Trying to sign up with:", {
-      name: formData.name,
-      email: formData.email,
-    });
-
     const success = await signup({
       name: formData.name,
       email: formData.email,
       password: formData.password,
     });
-
-    console.log("Signup result:", success);
 
     if (success) {
       navigate("/plants");

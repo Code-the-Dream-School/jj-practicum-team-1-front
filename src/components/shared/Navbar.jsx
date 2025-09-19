@@ -30,7 +30,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="text-2xl font-bold tracking-wide">
           <Link to="/" onClick={() => setOpen(false)}>
-            PlantApp
+            Plantasy
           </Link>
         </div>
 
@@ -96,7 +96,9 @@ export default function Navbar() {
 
       {/* Backdrop */}
       <div
-        className={`md:hidden fixed inset-0 bg-black/30 transition-opacity ${open ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+        className={`md:hidden fixed inset-0 bg-black/30 transition-opacity ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
@@ -104,7 +106,11 @@ export default function Navbar() {
       {/* Mobile panel */}
       <div
         id="mobile-menu"
-        className={`md:hidden absolute left-0 right-0 top-[56px] sm:top-[60px] bg-green-800 shadow-lg transition-all duration-200 origin-top ${open ? "scale-y-100 opacity-100" : "scale-y-0 opacity-0 pointer-events-none"}`}
+        className={`md:hidden absolute left-0 right-0 top-[56px] sm:top-[60px] bg-green-800 shadow-lg transition-all duration-200 origin-top ${
+          open
+            ? "scale-y-100 opacity-100"
+            : "scale-y-0 opacity-0 pointer-events-none"
+        }`}
       >
         <div className="px-2 py-2 space-y-1">
           <NavLink to="/" className={link} onClick={() => setOpen(false)}>

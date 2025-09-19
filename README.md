@@ -1,6 +1,6 @@
-# PlantApp - Front-End Repo for Node/React Practicum
+# Plantasy - Front-End Repo for Node/React Practicum
 
-This is the front-end for our team's practicum project **PlantApp**.
+This is the front-end for our team's practicum project **Plantasy**.
 It is a React app styled with Tailwind CSS that connects to a Node backend server.
 
 It is suggested that you run these instructions **after** you setup the back-end server first.
@@ -58,7 +58,7 @@ Note: In the below example, the group's front-end repository was named `bb-pract
 **Project Structure**
 
 ```bash
-plantapp-frontend/
+plantasy-frontend/
 ├── src/
 │   ├── api/              # API client & services
 │   ├── auth/             # AuthContext, ProtectedRoute

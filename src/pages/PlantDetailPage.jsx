@@ -13,7 +13,6 @@ export default function PlantDetailPage() {
 
   const location = useLocation();
   const { state } = location;
-  console.log("state:", state);
 
   // Fetch individual plant from the API
   useEffect(() => {
@@ -53,7 +52,6 @@ export default function PlantDetailPage() {
   const navRoute = () => {
     let route;
 
-    console.log("state.linkedFrom:", state.linkedFrom);
     if (state.linkedFrom === "explorer page") {
       route = "/explorer";
     }
@@ -66,7 +64,6 @@ export default function PlantDetailPage() {
       route = `/identify`;
     }
 
-    console.log("route:", route);
     return route;
   };
 

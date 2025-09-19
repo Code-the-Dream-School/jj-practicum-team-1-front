@@ -23,6 +23,7 @@ export default function SortButton({ handleSort, isAscending }) {
 
   return (
     <button
+      type="button"
       onClick={handleSort}
       className="px-6 py-3 rounded-xl font-bold transition duration-200 shadow inline-flex items-center justify-center"
       style={{

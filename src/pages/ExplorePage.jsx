@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../lib/apiClient";
 import PlantGrid from "../components/PlantGrid";
 import Button from "../components/shared/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fillerPlantData } from "../data/fillerPlantData";
+import SortButton from "../components/SortButton";
 
 export default function ExplorerPage() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function ExplorerPage() {
   const [searchName, setSearchName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isAscending, setIsAscending] = useState(true);
 
   const navigate = useNavigate();
 
@@ -46,10 +48,36 @@ export default function ExplorerPage() {
 
     setIsLoading(false);
   };
+
   const handleAdd = (imageURL, name) => {
     navigate("/identify", {
       state: { imageURL, name, mode: "manual" },
     });
+  };
+
+  const setAscendingOrder = () =>
+    setPlants((plants) =>
+      [...plants].sort((a, b) => {
+        return a.common_name
+          .toLowerCase()
+          .localeCompare(b.common_name.toLowerCase());
+      })
+    );
+  const setDescendingOrder = () =>
+    setPlants((plants) =>
+      [...plants].sort((a, b) => {
+        return b.common_name
+          .toLowerCase()
+          .localeCompare(a.common_name.toLowerCase());
+      })
+    );
+
+  useEffect(() => {
+    isAscending ? setAscendingOrder() : setDescendingOrder();
+  }, [isAscending]);
+
+  const handleSort = () => {
+    setIsAscending((value) => !value);
   };
 
   return (
@@ -74,10 +102,12 @@ export default function ExplorerPage() {
                 onChange={(e) => setSearchName(e.target.value)}
                 className="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-green-500 focus:ring focus:ring-green-300 focus:ring-opacity-50"
               />
-
-              <Button type="submit" disabled={isLoading}>
-                Search
-              </Button>
+              <div className="flex flex-inline-col gap-2">
+                <Button type="submit" disabled={isLoading}>
+                  Search
+                </Button>
+                <SortButton handleSort={handleSort} isAscending={isAscending} />
+              </div>
             </form>
           </div>
         </div>

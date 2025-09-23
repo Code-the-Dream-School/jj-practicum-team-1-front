@@ -15,13 +15,15 @@ You will have two folders inside one parent folder (one for front-end and one fo
 
 - Auth - Sign up, Log in, Log out
 
-- Observations - Post plant observations (image, title, location, notes)
+- Observations - (authenticated users can upload photos, name, location, and notes)
 
-- Plant Details - Get suggestions from Pl@ntNet API
+- Plant Identification via Pl@ntNet API integration
 
-- Explore - Browse and search recent posts
+- Browse and search recent posts from all users (Explore)
 
-- Profile - View/Edit personal info and your posts
+- Manage your personal plant observations (My Collection)
+
+- Search Observations (filter by date, name, or location)
 
 ### Setting up local development environment
 
@@ -36,14 +38,14 @@ Now you have your front-end and back-end running locally!
 
 **Environment Variables**
 
-Create `.env.local` in the project root:
+Create `.env` in the project root:
 
 ```bash
-#Backend base URL (required):
+# Backend base URL (required):
 VITE_API_URL=http://localhost:8000/api/v1
 ```
 
-A sample file is provided: `.env.local.example`
+A sample file is provided: `.env.example`
 
 #### Running the front-end server in Visual Studio Code
 
@@ -60,14 +62,17 @@ Note: In the below example, the group's front-end repository was named `bb-pract
 ```bash
 plantasy-frontend/
 ├── src/
-│   ├── api/              # API client & services
-│   ├── auth/             # AuthContext, ProtectedRoute
-│   ├── components/       # Shared: Button, Navbar, ObservationCard
-│   ├── pages/            # Home, Explore, Login, Signup, Profile
+│   ├── lib/              # API client & services
+│   │   └── apiClient.js
+│   ├── auth/             # AuthContext, LoginForm, SignupForm
+│   ├── components/       # Shared UI: Button, Navbar; PlantCard, PlantGrid, EditPlantModal
+│   ├── pages/            # Home, Explore, Login, Signup, PageNotFound, PlantDetail, PlantIdentifier, Plants
+│   ├── routes/           # PrivateRoute
+│   │   └── PrivateRoute.jsx
 │   ├── styles/           # Tailwind + global styles
 │   └── App.jsx / main.jsx
 ├── public/
-├── .env.local.example
+├── .env.example
 ├── package.json
 └── README.md
 ```
@@ -75,6 +80,8 @@ plantasy-frontend/
 **Tech Stack**
 
 - React (Vite)
+
+- Figma
 
 - Tailwind CSS
 
@@ -85,6 +92,8 @@ plantasy-frontend/
 - Fetch API (custom apiClient)
 
 - Node/Express backend (separate repo)
+
+- Jira
 
 ### Git Workflow - Step by Step Guide
 
